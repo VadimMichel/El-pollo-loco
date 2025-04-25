@@ -1,6 +1,7 @@
 class Character extends MovableObject{
     width = 125;
     height = 250;
+    world;
 
     IMAGES_WALKING = [
         "img/2_character_pepe/2_walk/W-21.png",
