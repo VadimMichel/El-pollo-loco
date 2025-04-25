@@ -24,6 +24,7 @@ class World{
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.draw();
+        this.clouds[0].moveLeft();
     }
 
     draw() {
