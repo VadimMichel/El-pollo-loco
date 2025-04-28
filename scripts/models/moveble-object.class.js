@@ -28,4 +28,11 @@ class MovableObject {
             this.x -= speed;
         }, 1000 / 60);
     }
+
+    animateImage(IMAGES_WALKING){
+        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let path = IMAGES_WALKING[i];
+        this.img = this.imageCache[path];
+        this.currentImage ++;
+    }
 }
