@@ -1,6 +1,6 @@
 class MovableObject {
     x = 100;
-    y= 25;
+    y= 125;
     img;
     imageCache = {};
     currentImage = 0;
@@ -8,7 +8,7 @@ class MovableObject {
 
     applyGravity(){
         setInterval(() =>{
-            if(this.y <= 125){
+            if(this.limitationYGround() || this.speedY > 0){
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }
@@ -33,19 +33,34 @@ class MovableObject {
     }
 
     moveRight(){
-        console.log("moving right");
+        this.x += this.speed;
+        this.otherDirection = false;
     }
 
-    moveLeft(speed){
-        setInterval(() => {
-            this.x -= speed;
-        }, 1000 / 60);
+    moveLeft(){
+        this.x -= this.speed;
     }
 
-    animateImage(IMAGES_WALKING){
+    animateImage(IMAGES_ARRAY){
         let i = this.currentImage % this.IMAGES_WALKING.length;
-        let path = IMAGES_WALKING[i];
+        let path = IMAGES_ARRAY[i];
         this.img = this.imageCache[path];
         this.currentImage ++;
+    }
+
+    jump(){
+        this.speedY = 25;
+    }
+
+    drawFrame(ctx){
+        ctx.beginPath();
+        ctx.lineWidth = "6";
+        ctx.strokeStyle = "red";
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.stroke();
+    }
+
+    draw(ctx){
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 }
