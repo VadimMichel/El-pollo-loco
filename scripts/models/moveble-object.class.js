@@ -55,6 +55,17 @@ class MovableObject {
         this.currentImage ++;
     }
 
+    getHit(){
+        this.energy -= this.recievedDamage;
+        if(this.energy <= 0){
+            this.energy = 0;
+        }
+    }
+
+    isDead(){
+        return this.energy == 0;
+    }
+
     jump(){
         this.speedY = 25;
     }
