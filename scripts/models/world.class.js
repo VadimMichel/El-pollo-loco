@@ -12,10 +12,23 @@ class World{
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkCollisions();
     }
 
     setWorld(){
         this.character.world = this;
+    }
+
+    checkCollisions(){
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if (this.character.isCollading(enemy)){
+                    
+                    this.character.energy -= 20;
+                    console.log("character is colliding!! Enery is", this.character.energy)
+                }
+            })
+        }, 200);
     }
 
     draw() {
