@@ -6,6 +6,7 @@ class MovableObject {
     currentImage = 0;
     otherDirection = false;
     energy = 100;
+    lastHit = 0;
     offset = {
         top: 0,
         left: 0,
@@ -49,7 +50,7 @@ class MovableObject {
     }
 
     animateImage(IMAGES_ARRAY){
-        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let i = this.currentImage % IMAGES_ARRAY.length;
         let path = IMAGES_ARRAY[i];
         this.img = this.imageCache[path];
         this.currentImage ++;
@@ -59,7 +60,15 @@ class MovableObject {
         this.energy -= this.recievedDamage;
         if(this.energy <= 0){
             this.energy = 0;
+        }else{
+            this.lastHit = new Date().getTime();
         }
+    }
+
+    isHurt(){
+        let timePassed = new Date().getTime() - this.lastHit
+        timePassed = timePassed / 1000;
+        return timePassed < 0.5;
     }
 
     isDead(){
