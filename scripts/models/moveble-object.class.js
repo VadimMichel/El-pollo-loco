@@ -4,6 +4,7 @@ class MovableObject extends DrawableObject{
     otherDirection = false;
     energy = 100;
     lastHit = 0;
+    i = 0;
     offset = {
         top: 0,
         left: 0,
@@ -38,25 +39,33 @@ class MovableObject extends DrawableObject{
     }
 
     animateImage(IMAGES_ARRAY){
-        let i = this.currentImage % IMAGES_ARRAY.length;
-        let path = IMAGES_ARRAY[i];
+        if(IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE){
+            this.currentImage ++;
+            this.i = this.currentImage % IMAGES_ARRAY.length;
+        }else{
+            if (this.i < IMAGES_ARRAY.length - 1) {
+                this.i++;
+            }
+        } 
+        let path = IMAGES_ARRAY[this.i];
         this.img = this.imageCache[path];
-        this.currentImage ++;
+        
     }
 
     getHit(){
+        if(!this.isHurt()){
         this.energy -= this.recievedDamage;
         if(this.energy <= 0){
             this.energy = 0;
         }else{
             this.lastHit = new Date().getTime();
-        }
+        }}
     }
 
     isHurt(){
         let timePassed = new Date().getTime() - this.lastHit
         timePassed = timePassed / 1000;
-        return timePassed < 0.5;
+        return timePassed < 0.6;
     }
 
     isDead(){
