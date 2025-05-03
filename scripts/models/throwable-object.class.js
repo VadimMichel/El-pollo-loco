@@ -1,4 +1,11 @@
 class ThrowableObject extends MovableObject{
+    width = 120;
+    height = 100;
+    acceleration = 2;
+    speed = 30;
+    x = 50;
+    y = 50;
+
     IMAGES_BOTTLE_TOTATION = [
         "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
         "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
@@ -15,7 +22,28 @@ class ThrowableObject extends MovableObject{
         "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png"
     ];
 
-    constructor(){
-        super.loadImages(this.IMAGES_BOTTLE_TOTATION)
+    constructor(x, y){
+        super().loadImage(this.IMAGES_BOTTLE_TOTATION[0]);
+        this.loadImages(this.IMAGES_BOTTLE_TOTATION)
+        this.animate();
+        this.x = x;
+        this.y = y;
+        this.trow()
+    }
+
+    trow(){
+        this.speedY = 20;
+        this.applyGravity();
+        setInterval(() => {
+            this.moveRight(this.speed);
+        }, 1000 / 25);
+        
+    }
+
+    animate(){
+        setInterval(() =>{
+            this.animateImage(this.IMAGES_BOTTLE_TOTATION);
+        }, 100)
+        
     }
 }

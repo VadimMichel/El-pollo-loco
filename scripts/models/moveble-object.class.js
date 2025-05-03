@@ -1,6 +1,6 @@
 class MovableObject extends DrawableObject{
     x = 100;
-    y= 125;
+    y = 125;
     otherDirection = false;
     energy = 100;
     lastHit = 0;
@@ -21,7 +21,11 @@ class MovableObject extends DrawableObject{
     }
 
     limitationYGround(){
-        return this.y <= 125;
+        if (this instanceof ThrowableObject){
+            return true;
+        } else{
+            return this.y <= 125;
+        }  
     }
 
    moveRight(){
