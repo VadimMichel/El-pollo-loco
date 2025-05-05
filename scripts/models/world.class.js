@@ -6,16 +6,24 @@ class World{
     keyboard;
     camera_x = 0;
     coinAmount = 0;
+    bottleAmount = 0;
     healthBar = new StatusBar("health", 0, 100);
     coinBar = new StatusBar("coin", 45, 0);
     bottleBar = new StatusBar("bottle", 90, 0);
-    bottle = [];
+    bottleThrow = [];
+    bottle = [
+        new CollectableObject("bottle", 330),
+        new CollectableObject("bottle", 330),
+        new CollectableObject("bottle", 330),
+        new CollectableObject("bottle", 330),
+        new CollectableObject("bottle", 330)
+    ];
     coins = [
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin(),
-        new Coin()
+        new CollectableObject("coin", 100),
+        new CollectableObject("coin", 100),
+        new CollectableObject("coin", 100),
+        new CollectableObject("coin", 100),
+        new CollectableObject("coin", 100)
     ]
 
     constructor(canvas, keyboard){
@@ -41,22 +49,35 @@ class World{
                 this.coinAmount += 20;
                 this.coinBar.setPercentage(this.coinAmount);
                 this.coins.splice(i, 1);
+            }else if (this.character.isCollading(object) && array == this.bottle){
+                this.bottleAmount += 20;
+                this.bottleBar.setPercentage(this.bottleAmount);
+                this.bottle.splice(i, 1);
             }
+            this.bottleThrow.forEach((throwObj) => {
+                if (throwObj.isCollading(object)) {
+                    this.bottleThrow.colision();
+                    console.log(this.bottleThrow.collided)
+                }
+            });
         })
     }
 
     run(){
         setInterval(() => {
             this.checkCollisions(this.level.enemies); 
-            this.checkCollisions(this.coins) 
+            this.checkCollisions(this.coins);
+            this.checkCollisions(this.bottle);
             this.checkThrow();
         }, 100);
     }
 
     checkThrow(){
-        if(this.keyboard.D){
-            let bottle = new ThrowableObject(this.character.x + 70, this.character.y + 100);
-            this.bottle.push(bottle);
+        if(this.keyboard.D && this.bottleAmount > 0){
+            let bottleThrow = new ThrowableObject(this.character.x + 70, this.character.y + 100);
+            this.bottleThrow.push(bottleThrow);
+            this.bottleAmount -= 20;
+            this.bottleBar.setPercentage(this.bottleAmount)
         }
     }
 
@@ -68,6 +89,7 @@ class World{
         this.addObjectsToMap(this.coins);
         this.addToMap(this.character);
         this.addObjectsToMap(this.bottle);
+        this.addObjectsToMap(this.bottleThrow);
         this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.healthBar);
@@ -89,15 +111,14 @@ class World{
     }
 
     addToMap(mo){
-        if(mo.collectet){
-            if(mo.otherDirection){
+        if(mo.otherDirection){
             this.flipImage(mo);
-            }
-            mo.draw(this.ctx);
-            mo.drawFrame(this.ctx);
-            if(mo.otherDirection){
+        }
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx);
+        if(mo.otherDirection){
             this.flipImageBack(mo);
-            }}
+        }
     }
 
     flipImage(mo){

@@ -4,7 +4,6 @@ class StatusBar extends DrawableObject{
     width = 250;
     height= 60;
     persentage;
-    arrayCache;
 
     IMAGES_HEALTH = [
         "img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png",

@@ -2,7 +2,7 @@ class DrawableObject{
     img;
     imageCache = {};
     currentImage = 0;
-    collectet = true;
+    arrayCache;
 
     loadImage(path) {
         this.img = new Image();
@@ -28,6 +28,15 @@ class DrawableObject{
         ctx.strokeStyle = "red";
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.stroke();
+        }
+    }
+
+    randomZerroOrOne(){
+        let rndNummber = Math.random() * 10
+        if(rndNummber > 5){
+            return 1;
+        }else{
+            return 0;
         }
     }
 }
