@@ -6,7 +6,7 @@ class ThrowableObject extends MovableObject{
     x = 50;
     y = 50;
 
-    IMAGES_BOTTLE_TOTATION = [
+    IMAGES_BOTTLE_ROTATION = [
         "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
         "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
         "img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
@@ -23,8 +23,8 @@ class ThrowableObject extends MovableObject{
     ];
 
     constructor(x, y){
-        super().loadImage(this.IMAGES_BOTTLE_TOTATION[0]);
-        this.loadImages(this.IMAGES_BOTTLE_TOTATION)
+        super().loadImage(this.IMAGES_BOTTLE_ROTATION[0]);
+        this.loadImages(this.IMAGES_BOTTLE_ROTATION)
         this.animate();
         this.x = x;
         this.y = y;
@@ -42,7 +42,7 @@ class ThrowableObject extends MovableObject{
 
     animate(){
         setInterval(() =>{
-            this.animateImage(this.IMAGES_BOTTLE_TOTATION);
+            this.animateImage(this.IMAGES_BOTTLE_ROTATION);
         }, 100)
         
     }

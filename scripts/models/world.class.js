@@ -5,8 +5,18 @@ class World{
     ctx;
     keyboard;
     camera_x = 0;
-    statusBar = new StatusBar();
+    coinAmount = 0;
+    healthBar = new StatusBar("health", 0, 100);
+    coinBar = new StatusBar("coin", 45, 0);
+    bottleBar = new StatusBar("bottle", 90, 0);
     bottle = [];
+    coins = [
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin()
+    ]
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext("2d");
@@ -21,18 +31,24 @@ class World{
         this.character.world = this;
     }
 
-    checkCollisions(){
-        this.level.enemies.forEach((enemy) => {
-            if (this.character.isCollading(enemy)){
+    checkCollisions(array){
+        array.forEach((object, i) => {
+            if (this.character.isCollading(object) && array == this.level.enemies){
                 this.character.getHit();
-                this.statusBar.setPercentage(this.character.energy);
+                this.healthBar.setPercentage(this.character.energy);
                 console.log("character is colliding!! Enery is", this.character.energy)
-            }})
+            }else if (this.character.isCollading(object) && array == this.coins){
+                this.coinAmount += 20;
+                this.coinBar.setPercentage(this.coinAmount);
+                this.coins.splice(i, 1);
+            }
+        })
     }
 
     run(){
         setInterval(() => {
-            this.checkCollisions();  
+            this.checkCollisions(this.level.enemies); 
+            this.checkCollisions(this.coins) 
             this.checkThrow();
         }, 100);
     }
@@ -48,13 +64,16 @@ class World{
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusBar);
-        this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.coins);
         this.addToMap(this.character);
         this.addObjectsToMap(this.bottle);
         this.addObjectsToMap(this.level.clouds);
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar)
+        this.ctx.translate(this.camera_x, 0);
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
@@ -70,14 +89,15 @@ class World{
     }
 
     addToMap(mo){
-        if(mo.otherDirection){
+        if(mo.collectet){
+            if(mo.otherDirection){
             this.flipImage(mo);
-        }
-        mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
-        if(mo.otherDirection){
+            }
+            mo.draw(this.ctx);
+            mo.drawFrame(this.ctx);
+            if(mo.otherDirection){
             this.flipImageBack(mo);
-        }
+            }}
     }
 
     flipImage(mo){

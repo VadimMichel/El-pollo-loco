@@ -39,7 +39,7 @@ class MovableObject extends DrawableObject{
     }
 
     animateImage(IMAGES_ARRAY){
-        if(IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE){
+        if(IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
             this.currentImage ++;
             this.i = this.currentImage % IMAGES_ARRAY.length;
         }else{

@@ -2,8 +2,9 @@ class StatusBar extends DrawableObject{
     x = 20;
     y = -10;
     width = 250;
-    height= 80;
+    height= 60;
     persentage;
+    arrayCache;
 
     IMAGES_HEALTH = [
         "img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png",
@@ -32,29 +33,38 @@ class StatusBar extends DrawableObject{
         "img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png"
     ];
 
-    constructor(){
-        super()
-        this.loadImages(this.IMAGES_HEALTH);
-        this.setPercentage(100);
+    constructor(array, y, persentage){
+        super();
+        if(array == "coin"){
+            this.arrayCache = this.IMAGES_COIN;
+        }else if (array == "health" ){
+            this.arrayCache = this.IMAGES_HEALTH;
+        }else if (array == "bottle"){
+            this.arrayCache = this.IMAGES_BOTTLE;
+        }
+        this.persentage = persentage;
+        this.y = y;
+        this.loadImages(this.arrayCache);
+        this.setPercentage(this.persentage);
     }
 
     setPercentage(persentage){
         console.log(this.persentage)
         this.persentage = persentage;
-        let path = this.IMAGES_HEALTH[this.resolveImageIndex()];
+        let path = this.arrayCache[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
     resolveImageIndex() {
-        if(this.persentage == 100){
+        if(this.persentage >= 100){
             return 5;
-        }else if(this.persentage == 80){
+        }else if(this.persentage > 79 && this.persentage < 100){
             return 4;
-        }else if(this.persentage == 60){
+        }else if(this.persentage > 59 && this.persentage < 80){
             return 3;
-        }else if(this.persentage == 40){
+        }else if(this.persentage > 39 && this.persentage < 60){
             return 2;
-        }else if(this.persentage == 20){
+        }else if(this.persentage > 19 && this.persentage < 40){
             return 1;
         }else{
             return 0;

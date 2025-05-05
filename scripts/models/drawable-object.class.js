@@ -2,6 +2,7 @@ class DrawableObject{
     img;
     imageCache = {};
     currentImage = 0;
+    collectet = true;
 
     loadImage(path) {
         this.img = new Image();
