@@ -5,8 +5,8 @@ class ThrowableObject extends MovableObject{
     speed = 30;
     x = 50;
     y = 50;
-    collided = false;
-
+    i = 0;
+    
     IMAGES_BOTTLE_ROTATION = [
         "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
         "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
@@ -30,32 +30,27 @@ class ThrowableObject extends MovableObject{
         this.animate();
         this.x = x;
         this.y = y;
-        this.trow()
+        this.trow();
     }
 
     trow(){
         this.speedY = 20;
         this.applyGravity();
-        setInterval(() => {
-            this.moveRight(this.speed);
-        }, 1000 / 25);
+            setInterval(() => {
+                if(!this.collided){
+                    this.moveRight(this.speed);
+                }
+            }, 1000 / 25);
     }
 
     animate(){
         setInterval(() =>{
             if(this.collided){
                 this.animateImage(this.IMAGES_BOTTLE_SPLASH);
+                this.i++
             }else{
                 this.animateImage(this.IMAGES_BOTTLE_ROTATION);
             }
         }, 100)
-        
-    }
-
-    colision(){
-        console.log("test")
-        this.speedY = 0;
-        this.speed = 0;
-        this.collided = true;
     }
 }

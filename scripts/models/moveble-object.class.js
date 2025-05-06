@@ -2,6 +2,7 @@ class MovableObject extends DrawableObject{
     x = 100;
     y = 125;
     otherDirection = false;
+    collided = false;
     energy = 100;
     lastHit = 0;
     i = 0;
@@ -14,7 +15,7 @@ class MovableObject extends DrawableObject{
 
     applyGravity(){
         setInterval(() =>{
-            if(this.limitationYGround() || this.speedY > 0){
+            if((this.limitationYGround() || this.speedY > 0) && !this.collided){
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }

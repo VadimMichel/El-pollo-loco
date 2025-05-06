@@ -44,7 +44,6 @@ class World{
             if (this.character.isCollading(object) && array == this.level.enemies){
                 this.character.getHit();
                 this.healthBar.setPercentage(this.character.energy);
-                console.log("character is colliding!! Enery is", this.character.energy)
             }else if (this.character.isCollading(object) && array == this.coins){
                 this.coinAmount += 20;
                 this.coinBar.setPercentage(this.coinAmount);
@@ -54,10 +53,11 @@ class World{
                 this.bottleBar.setPercentage(this.bottleAmount);
                 this.bottle.splice(i, 1);
             }
-            this.bottleThrow.forEach((throwObj) => {
-                if (throwObj.isCollading(object)) {
-                    this.bottleThrow.colision();
-                    console.log(this.bottleThrow.collided)
+            this.bottleThrow.forEach((throwObj, i) => {
+                if (throwObj.isCollading(object) || this.bottleThrow[i].y > 300) {
+                    console.log(object)
+                    this.bottleThrow[i].collided = true;
+                    this.deleteImage(i);
                 }
             });
         })
@@ -70,6 +70,12 @@ class World{
             this.checkCollisions(this.bottle);
             this.checkThrow();
         }, 100);
+    }
+
+    deleteImage(i){
+        if(this.bottleThrow[i].i == 6){
+                this.bottleThrow.splice(i, 1) 
+       }
     }
 
     checkThrow(){
