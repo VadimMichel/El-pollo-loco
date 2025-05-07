@@ -3,6 +3,9 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-image: url("img/5_background/image.png");
+    background-size: cover;
+    background-position: center;
 }
 
 canvas{

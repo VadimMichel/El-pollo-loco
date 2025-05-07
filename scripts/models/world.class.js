@@ -53,11 +53,12 @@ class World{
                 this.bottleBar.setPercentage(this.bottleAmount);
                 this.bottle.splice(i, 1);
             }
-            this.bottleThrow.forEach((throwObj, i) => {
-                if (throwObj.isCollading(object) || this.bottleThrow[i].y > 300) {
-                    console.log(object)
-                    this.bottleThrow[i].collided = true;
-                    this.deleteImage(i);
+            this.bottleThrow.forEach((throwObj, j) => {
+                if ((throwObj.isCollading(object) || this.bottleThrow[j].y > 300) && array == this.level.enemies) {
+                    object.getHit()
+                    console.log(object.energy)
+                    this.bottleThrow[j].collided = true;
+                    this.deleteImage(j);
                 }
             });
         })
@@ -74,7 +75,7 @@ class World{
 
     deleteImage(i){
         if(this.bottleThrow[i].i == 6){
-                this.bottleThrow.splice(i, 1) 
+            this.bottleThrow.splice(i, 1) 
        }
     }
 
