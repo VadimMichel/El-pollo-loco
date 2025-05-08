@@ -5,7 +5,7 @@ class ThrowableObject extends MovableObject{
     speed = 30;
     x = 50;
     y = 50;
-    i = 0;
+    j = 0;
     
     IMAGES_BOTTLE_ROTATION = [
         "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
@@ -47,7 +47,7 @@ class ThrowableObject extends MovableObject{
         setInterval(() =>{
             if(this.collided){
                 this.animateImage(this.IMAGES_BOTTLE_SPLASH);
-                this.i++
+                this.j++
             }else{
                 this.animateImage(this.IMAGES_BOTTLE_ROTATION);
             }

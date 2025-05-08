@@ -1,12 +1,11 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let backgroundAudio = new Audio ("audio/latin-traditional-music-spanish-mexican-background-intro-theme-258024.mp3");
 
 function init(){
     canvas = document.getElementById("content");
     world = new World(canvas, keyboard);
-    
-    console.log(world["character"])
 }
 
 

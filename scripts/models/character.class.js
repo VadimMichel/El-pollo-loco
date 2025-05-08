@@ -7,6 +7,10 @@ class Character extends MovableObject{
     acceleration = 2;
     recievedDamage = 20;
     notMoving = 0;
+    characterJumpAudioUrl = "audio/jump.mp3";
+    characterRunAudioUrl = "audio/step.mp3";
+    characterDeadAudioUrl = "audio/loose.mp3";
+    characterHurtAudioUrl = "audio/male_hurt7-48124.mp3"
 
     IMAGES_WALKING = [
         "img/2_character_pepe/2_walk/W-21.png",
@@ -87,23 +91,22 @@ class Character extends MovableObject{
 
         setInterval(() => {
             if(this.world.keyboard.LEFT && this.x > -617){
+                
                 this.moveLeft();
                 this.otherDirection = true;
-            }
-
-            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){
+            }if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){
+                
             this.moveRight();
             }
-
             if(this.world.keyboard.UP && !this.limitationYGround() || this.world.keyboard.SPACE && !this.limitationYGround()){
+                this.playAudio(this.characterJumpAudioUrl, 0.2, false)
                 this.jump();
+                this.notMoving = 0;
             }
-
             this.world.camera_x = -this.x + 100;
         }, 1000/60)
 
         setInterval(() =>{
-
             if(this.isDead()){
                 this.animateImage(this.IMAGES_DEAD);
                 this.notMoving = 0;
@@ -114,10 +117,11 @@ class Character extends MovableObject{
                 this.animateImage(this.IMAGES_JUMPING);
                 this.notMoving = 0;
             } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT){
+                this.playAudio(this.characterRunAudioUrl, 0.6, false);
                 this.animateImage(this.IMAGES_WALKING);
                 this.notMoving = 0;
             }else {
-                if(this.notMoving < this.IMAGES_IDLE.length){
+                if(this.notMoving < this.IMAGES_IDLE.length * 3){
                     this.animateImage(this.IMAGES_IDLE);
                     this.notMoving++
                 }else{

@@ -40,7 +40,7 @@ class MovableObject extends DrawableObject{
     }
 
     animateImage(IMAGES_ARRAY){
-        if(IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
+        if(IMAGES_ARRAY == this.IMAGES_IDLE || IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
             this.currentImage ++;
             this.i = this.currentImage % IMAGES_ARRAY.length;
         }else{
@@ -50,7 +50,6 @@ class MovableObject extends DrawableObject{
         } 
         let path = IMAGES_ARRAY[this.i];
         this.img = this.imageCache[path];
-        
     }
 
     getHit(){
@@ -84,5 +83,18 @@ class MovableObject extends DrawableObject{
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     }
 
-    
+    isCollidingFromTop(mo) {
+        return this.y + this.height <= mo.y + mo.height / 2 && 
+            this.y + this.height > mo.y + mo.offset.top &&  
+            this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right
+        ;
+    }
+
+    playAudio(url, volume, loop){
+        let audio = new Audio(url);
+        audio.volume = volume;
+        audio.loop = loop;
+        audio.play();
+    }
 }

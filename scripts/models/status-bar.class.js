@@ -32,7 +32,16 @@ class StatusBar extends DrawableObject{
         "img/7_statusbars/1_statusbar/3_statusbar_bottle/orange/100.png"
     ];
 
-    constructor(array, y, persentage){
+    IMAGES_BOSS = [
+        "img/7_statusbars/2_statusbar_endboss/blue/blue0.png",
+        "img/7_statusbars/2_statusbar_endboss/blue/blue20.png",
+        "img/7_statusbars/2_statusbar_endboss/blue/blue40.png",
+        "img/7_statusbars/2_statusbar_endboss/blue/blue60.png",
+        "img/7_statusbars/2_statusbar_endboss/blue/blue80.png",
+        "img/7_statusbars/2_statusbar_endboss/blue/blue100.png",
+    ]
+
+    constructor(array, y, x, persentage){
         super();
         if(array == "coin"){
             this.arrayCache = this.IMAGES_COIN;
@@ -40,8 +49,11 @@ class StatusBar extends DrawableObject{
             this.arrayCache = this.IMAGES_HEALTH;
         }else if (array == "bottle"){
             this.arrayCache = this.IMAGES_BOTTLE;
+        }else if (array == "boss"){
+            this.arrayCache = this.IMAGES_BOSS;
         }
         this.persentage = persentage;
+        this.x = x;
         this.y = y;
         this.loadImages(this.arrayCache);
         this.setPercentage(this.persentage);
