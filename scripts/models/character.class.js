@@ -11,6 +11,7 @@ class Character extends MovableObject{
     characterRunAudioUrl = "audio/step.mp3";
     characterDeadAudioUrl = "audio/loose.mp3";
     characterHurtAudioUrl = "audio/male_hurt7-48124.mp3"
+    x = 2000;
 
     IMAGES_WALKING = [
         "img/2_character_pepe/2_walk/W-21.png",

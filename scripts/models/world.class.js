@@ -39,48 +39,29 @@ class World{
 
     setWorld(){
         this.character.world = this;
+        this.level.enemies[3].world = this;
     }
 
     checkCollisions(array){
         array.forEach((object, i) => {
-            if (this.character.isCollading(object) && array == this.level.enemies && !this.character.isCollidingFromTop(object) && !object.isDead()){
-                if(!this.character.isHurt() && !this.character.isDead()){
-                    this.character.playAudio(this.character.characterHurtAudioUrl, 0.2, false)
-                }
-                this.character.getHit();
-                this.healthBar.setPercentage(this.character.energy);
-            }else if(this.character.isCollidingFromTop(object) && array == this.level.enemies && !object.isDead()){
-                this.level.enemies[i].playAudio(this.level.enemies[i].chichenHurtAudioUrl, 0.1, false)
-                object.getHit();
-                this.character.jump();
-            }else if (this.character.isCollading(object) && array == this.coins){
-                this.coins[i].playAudio(this.coins[i].coinAudioUrl, 0.2, false)
-                this.coinAmount += 20;
-                this.coinBar.setPercentage(this.coinAmount);
-                this.coins.splice(i, 1);
-            }else if (this.character.isCollading(object) && array == this.bottle){
-                this.bottle[i].playAudio(this.bottle[i].bottleCollectAudioUrl, 0.2, false)
-                this.bottleAmount += 20;
-                this.bottleBar.setPercentage(this.bottleAmount);
-                this.bottle.splice(i, 1);
+            if (this.isCharacterHitByEnemy(object, array)){
+                this.characterisHitByEnemy();  
+            }else if(this.doesCharacterJumpOnEnemy(object, array)){
+                this.characterJumpOnEnemy(i, object);
+            }else if (this.isCollectingCoin(object, array)){
+                this.collectCoin(i);
+            }else if (this.doesCharactertouchBottle(object, array)){
+                this.characterCollectBottle(i);
             }
             this.bottleThrow.forEach((throwObj, j) => {
-                if (throwObj.isCollading(object)  && array == this.level.enemies) {
+                if (this.doesBottleHitEnemy(object, array, throwObj)) {
                     object.getHit()
-                    if(!this.bottleThrow[j].collided){
-                        this.bottleThrow[j].playAudio(this.bottleThrow[j].bottleBreaksAudioUrl, 0.1)
-                    }
-                    this.bottleThrow[j].collided = true;
-                    this.deleteImage(j);
-                    if(object == this.level.enemies[3]){
-                        this.bossHealthBar.setPercentage(this.level.enemies[3].energy)
+                    this.bottleBreak(j);
+                    if(this.isTheObjectABoss(object)){
+                        this.changeBossHealthBarAmount();
                     }
                 }else if(this.bottleThrow[j].y > 300){
-                    if(!this.bottleThrow[j].collided){
-                        this.bottleThrow[j].playAudio(this.bottleThrow[j].bottleBreaksAudioUrl, 0.1)
-                    }
-                    this.bottleThrow[j].collided = true;
-                    this.deleteImage(j); 
+                    this.bottleBreak(j);
                 }
             });
         })
@@ -92,7 +73,14 @@ class World{
             this.checkCollisions(this.coins);
             this.checkCollisions(this.bottle);
             this.checkThrow();
+            this.startBossFight();
         }, 10);
+    }
+
+    startBossFight(){
+        if(this.character.x > 2150){
+            this.level.enemies[3].startBossFight = true;
+        }
     }
 
     deleteImage(i){
@@ -102,7 +90,7 @@ class World{
     }
 
     checkThrow(){
-        if(this.keyboard.D && this.bottleAmount > 0 && this.bottleThrow.length < 1){
+        if(this.dPressedAndSomeBottleLeft() && !this.level.enemies[3].startBossFight ||  this.level.enemies[3].startAnimation >= 9 && this.dPressedAndSomeBottleLeft()){
             let bottleThrow = new ThrowableObject(this.character.x + 70, this.character.y + 100);
             this.bottleThrow.push(bottleThrow);
             this.bottleAmount -= 20;
@@ -125,7 +113,9 @@ class World{
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
-        this.addToMap(this.bossHealthBar);
+        if(this.level.enemies[3].startBossFight){
+            this.addToMap(this.bossHealthBar);
+        }
         this.ctx.translate(this.camera_x, 0);
         this.ctx.translate(-this.camera_x, 0);
 
@@ -164,7 +154,71 @@ class World{
         this.ctx.restore(); 
     }
 
-    bottleBreak(){
-        
+    bottleBreak(j){
+        if(!this.bottleThrow[j].collided){
+            this.bottleThrow[j].playAudio(this.bottleThrow[j].bottleBreaksAudioUrl, 0.1)
+        }
+        this.bottleThrow[j].collided = true;
+        this.deleteImage(j); 
+    }
+
+    isCharacterHitByEnemy(object, array){
+        return this.character.isCollading(object) && array == this.level.enemies && !this.character.isCollidingFromTop(object) && !object.isDead()
+    }
+
+    characterisHitByEnemy(){
+        if(!this.character.isHurt() && !this.character.isDead()){
+            this.character.playAudio(this.character.characterHurtAudioUrl, 0.2, false)
+        }
+        this.character.getHit();
+        this.healthBar.setPercentage(this.character.energy);
+    }
+
+    characterJumpOnEnemy(i, object){
+        this.level.enemies[i].playAudio(this.level.enemies[i].chichenHurtAudioUrl, 0.1, false)
+        object.getHit();
+        this.character.jump();
+    }
+
+    doesCharacterJumpOnEnemy(object, array){
+        return this.character.isCollidingFromTop(object) && array == this.level.enemies && !object.isDead()
+    }
+
+    collectCoin(i){
+        this.coins[i].playAudio(this.coins[i].coinAudioUrl, 0.2, false)
+        this.coinAmount += 20;
+        this.coinBar.setPercentage(this.coinAmount);
+        this.coins.splice(i, 1);
+    }
+
+    isCollectingCoin(object, array){
+        return this.character.isCollading(object) && array == this.coins
+    }
+
+    doesCharactertouchBottle(object, array){
+        return this.character.isCollading(object) && array == this.bottle
+    }
+
+    characterCollectBottle(i){
+        this.bottle[i].playAudio(this.bottle[i].bottleCollectAudioUrl, 0.2, false)
+        this.bottleAmount += 20;
+        this.bottleBar.setPercentage(this.bottleAmount);
+        this.bottle.splice(i, 1);
+    }
+
+    doesBottleHitEnemy(object, array, throwObj){
+        return throwObj.isCollading(object) && array == this.level.enemies
+    }
+
+    isTheObjectABoss(object){
+        return object == this.level.enemies[3]
+    }
+
+    changeBossHealthBarAmount(){
+        this.bossHealthBar.setPercentage(this.level.enemies[3].energy)
+    }
+
+    dPressedAndSomeBottleLeft(){
+        return this.keyboard.D && this.bottleAmount > 0 && this.bottleThrow.length < 1
     }
 }

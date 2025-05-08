@@ -3,6 +3,10 @@ class Endboss extends MovableObject{
     height = 400;
     y = 45;
     recievedDamage = 20;
+    world;
+    startBossFight = false;
+    startAnimation = 0;
+    speed = 3;
 
     IMAGES_WALKING = [
         "img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -50,7 +54,9 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 2500;
+        this.loadImages(this.IMAGES_ALERT);
+        this.loadImages(this.IMAGES_ATTACK);
+        this.x = 2800;
         this.animate();
         
     }
@@ -58,16 +64,24 @@ class Endboss extends MovableObject{
     animate(){
         setInterval(() =>{
             if(this.isDead()){
-                if(this.IMAGES_DEAD == this.IMAGES_DEAD[0]){
-                    this.i = 0;
-                }
-                console.log(this.i)
                 this.animateImage(this.IMAGES_DEAD);
             }else if(this.isHurt()){
                 this.animateImage(this.IMAGES_HURT);
-            }else{
+            }else if(this.startBossFight && this.x > 2500){
                 this.animateImage(this.IMAGES_WALKING);
+            }else if (this.startBossFight && this.x > 2490 && this.startAnimation < 9 ){
+                this.animateImage(this.IMAGES_ALERT);
+                this.startAnimation++
+                console.log(this.startAnimation)
+            }else if (this.startAnimation >= 9 ){
+                this.animateImage(this.IMAGES_ATTACK);
             }
         }, 200)
+
+        setInterval(() => {
+            if(this.startBossFight && this.x > 2500 || this.startAnimation >= 9){
+                this.moveLeft();
+            }
+        }, 100);
     }
 }

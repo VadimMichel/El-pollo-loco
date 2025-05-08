@@ -42,7 +42,7 @@ class MovableObject extends DrawableObject{
     }
 
     animateImage(IMAGES_ARRAY){
-        if(IMAGES_ARRAY == this.IMAGES_IDLE || IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
+        if(IMAGES_ARRAY == this.IMAGES_ATTACK || IMAGES_ARRAY == this.IMAGES_IDLE || IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
             this.currentImage ++;
             this.i = this.currentImage % IMAGES_ARRAY.length;
             this.path = IMAGES_ARRAY[this.i];
@@ -98,10 +98,10 @@ class MovableObject extends DrawableObject{
         ;
     }
 
-    playAudio(url, volume){
+    playAudio(url, volume, loop){
         let audio = new Audio(url);
         audio.volume = volume;
-    
+        audio.loop = loop;
         audio.play();
     }
 }
