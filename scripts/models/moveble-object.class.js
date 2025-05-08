@@ -5,7 +5,9 @@ class MovableObject extends DrawableObject{
     collided = false;
     energy = 100;
     lastHit = 0;
+    path;
     i = 0;
+    j= 0;
     offset = {
         top: 0,
         left: 0,
@@ -43,13 +45,17 @@ class MovableObject extends DrawableObject{
         if(IMAGES_ARRAY == this.IMAGES_IDLE || IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
             this.currentImage ++;
             this.i = this.currentImage % IMAGES_ARRAY.length;
+            this.path = IMAGES_ARRAY[this.i];
         }else{
-            if (this.i < IMAGES_ARRAY.length - 1) {
-                this.i++;
+            if (this.j < IMAGES_ARRAY.length-1) {
+                console.log(this.j)
+                this.j++;
+                this.path = IMAGES_ARRAY[this.j];
+                console.log(this.j)
             }
         } 
-        let path = IMAGES_ARRAY[this.i];
-        this.img = this.imageCache[path];
+        
+        this.img = this.imageCache[this.path];
     }
 
     getHit(){
@@ -73,6 +79,7 @@ class MovableObject extends DrawableObject{
     }
 
     jump(){
+        this.j = 0;
         this.speedY = 25;
     }
 

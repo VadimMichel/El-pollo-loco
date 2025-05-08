@@ -65,7 +65,7 @@ class World{
                 this.bottle.splice(i, 1);
             }
             this.bottleThrow.forEach((throwObj, j) => {
-                if ((throwObj.isCollading(object) || this.bottleThrow[j].y > 300) && array == this.level.enemies) {
+                if (throwObj.isCollading(object)  && array == this.level.enemies) {
                     object.getHit()
                     if(!this.bottleThrow[j].collided){
                         this.bottleThrow[j].playAudio(this.bottleThrow[j].bottleBreaksAudioUrl, 0.1)
@@ -75,6 +75,12 @@ class World{
                     if(object == this.level.enemies[3]){
                         this.bossHealthBar.setPercentage(this.level.enemies[3].energy)
                     }
+                }else if(this.bottleThrow[j].y > 300){
+                    if(!this.bottleThrow[j].collided){
+                        this.bottleThrow[j].playAudio(this.bottleThrow[j].bottleBreaksAudioUrl, 0.1)
+                    }
+                    this.bottleThrow[j].collided = true;
+                    this.deleteImage(j); 
                 }
             });
         })
@@ -156,5 +162,9 @@ class World{
     flipImageBack(mo){
         mo.x = mo.x * -1;
         this.ctx.restore(); 
+    }
+
+    bottleBreak(){
+        
     }
 }
