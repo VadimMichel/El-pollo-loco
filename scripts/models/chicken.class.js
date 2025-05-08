@@ -5,6 +5,7 @@ class Chicken extends MovableObject{
     y = 330;
     speed;
     recievedDamage = 100;
+    chichenHurtAudioUrl = "audio/chicken-noise-196746.mp3";
 
     IMAGES_WALKING =[
         "img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",

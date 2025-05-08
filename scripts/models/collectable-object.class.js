@@ -3,6 +3,8 @@ class CollectableObject extends MovableObject{
     height = 100;
     y = 100;
     amount = 0;
+    coinAudioUrl = "audio/sound-effects-library-coin.mp3";
+    bottleCollectAudioUrl = "audio/collect_bottle.mp3";
 
     IMAGES_Coin = [
         "img/8_coin/coin_1.png",
@@ -12,7 +14,7 @@ class CollectableObject extends MovableObject{
     IMAGES_BOTTTLE = [
         "img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
         "img/6_salsa_bottle/2_salsa_bottle_on_ground.png"
-    ]
+    ];
 
     constructor(array, y){
         super();

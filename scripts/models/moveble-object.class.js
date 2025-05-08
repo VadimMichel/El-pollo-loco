@@ -91,10 +91,10 @@ class MovableObject extends DrawableObject{
         ;
     }
 
-    playAudio(url, volume, loop){
+    playAudio(url, volume){
         let audio = new Audio(url);
         audio.volume = volume;
-        audio.loop = loop;
+    
         audio.play();
     }
 }

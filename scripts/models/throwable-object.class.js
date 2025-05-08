@@ -6,6 +6,7 @@ class ThrowableObject extends MovableObject{
     x = 50;
     y = 50;
     j = 0;
+    bottleBreaksAudioUrl = "audio/glass-shatter-3-100155.mp3";
     
     IMAGES_BOTTLE_ROTATION = [
         "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",

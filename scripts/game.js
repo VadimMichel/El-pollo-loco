@@ -6,6 +6,9 @@ let backgroundAudio = new Audio ("audio/latin-traditional-music-spanish-mexican-
 function init(){
     canvas = document.getElementById("content");
     world = new World(canvas, keyboard);
+    backgroundAudio.volume = 0.07
+    backgroundAudio.loop = true
+    backgroundAudio.play();
 }
 
 
