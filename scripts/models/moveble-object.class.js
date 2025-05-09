@@ -1,6 +1,6 @@
 class MovableObject extends DrawableObject{
     x = 100;
-    y = 125;
+    y = 145;
     otherDirection = false;
     collided = false;
     energy = 100;
@@ -18,6 +18,7 @@ class MovableObject extends DrawableObject{
     applyGravity(){
         setInterval(() =>{
             if((this.limitationYGround() || this.speedY > 0) && !this.collided){
+                console.log(this.speedY);
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             }
@@ -42,7 +43,7 @@ class MovableObject extends DrawableObject{
     }
 
     animateImage(IMAGES_ARRAY){
-        if(IMAGES_ARRAY == this.IMAGES_ATTACK || IMAGES_ARRAY == this.IMAGES_IDLE || IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
+        if(IMAGES_ARRAY == this.IMAGES_ATTACK || IMAGES_ARRAY == this.IMAGES_IDLE||IMAGES_ARRAY == this.ImageCacheWalking || IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
             this.currentImage ++;
             this.i = this.currentImage % IMAGES_ARRAY.length;
             this.path = IMAGES_ARRAY[this.i];

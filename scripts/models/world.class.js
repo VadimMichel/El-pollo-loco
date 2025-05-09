@@ -189,7 +189,7 @@ class World{
     }
 
     doesCharacterJumpOnEnemy(object, array){
-        return this.character.isCollidingFromTop(object) && array == this.level.enemies && !object.isDead()
+        return this.character.isCollidingFromTop(object) && array == this.level.enemies && !object.isDead() && this.character.speedY < 0;
     }
 
     collectCoin(i){

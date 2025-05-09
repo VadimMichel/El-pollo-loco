@@ -41,7 +41,7 @@ class CollectableObject extends MovableObject{
         this.y = y;
         this.loadImage(this.arrayCache[this.randomZerroOrOne()]);
         this.loadImages(this.arrayCache);
-        this.x = 300 + Math.random() * 2000;
+        this.x = 300 + Math.random() * 1700;
     }
 
     animate(){
