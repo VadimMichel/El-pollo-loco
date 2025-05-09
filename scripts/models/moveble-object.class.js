@@ -48,10 +48,8 @@ class MovableObject extends DrawableObject{
             this.path = IMAGES_ARRAY[this.i];
         }else{
             if (this.j < IMAGES_ARRAY.length-1) {
-                console.log(this.j)
                 this.j++;
                 this.path = IMAGES_ARRAY[this.j];
-                console.log(this.j)
             }
         } 
         

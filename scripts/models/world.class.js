@@ -45,6 +45,9 @@ class World{
     checkCollisions(array){
         array.forEach((object, i) => {
             if (this.isCharacterHitByEnemy(object, array)){
+                if(this.isTheObjectABoss(object)){
+                    this.character.recievedDamage = 100;
+                }
                 this.characterisHitByEnemy();  
             }else if(this.doesCharacterJumpOnEnemy(object, array)){
                 this.characterJumpOnEnemy(i, object);
@@ -59,6 +62,7 @@ class World{
                     this.bottleBreak(j);
                     if(this.isTheObjectABoss(object)){
                         this.changeBossHealthBarAmount();
+                        this.level.enemies[3].speed += 0.9;
                     }
                 }else if(this.bottleThrow[j].y > 300){
                     this.bottleBreak(j);
@@ -90,7 +94,8 @@ class World{
     }
 
     checkThrow(){
-        if(this.dPressedAndSomeBottleLeft() && !this.level.enemies[3].startBossFight ||  this.level.enemies[3].startAnimation >= 9 && this.dPressedAndSomeBottleLeft()){
+        if(this.dPressedAndSomeBottleLeft() && this.bossFightNotStartet() || this.bossStartAnimationIsOver() && this.dPressedAndSomeBottleLeft()){
+            console.log("bottle")
             let bottleThrow = new ThrowableObject(this.character.x + 70, this.character.y + 100);
             this.bottleThrow.push(bottleThrow);
             this.bottleAmount -= 20;
@@ -136,7 +141,9 @@ class World{
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        mo.drawFrameOfset(this.ctx);
+        //mo.drawFrame(this.ctx);
+        
         if(mo.otherDirection){
             this.flipImageBack(mo);
         }
@@ -169,6 +176,7 @@ class World{
     characterisHitByEnemy(){
         if(!this.character.isHurt() && !this.character.isDead()){
             this.character.playAudio(this.character.characterHurtAudioUrl, 0.2, false)
+            this.character.j = 0;
         }
         this.character.getHit();
         this.healthBar.setPercentage(this.character.energy);
@@ -219,6 +227,14 @@ class World{
     }
 
     dPressedAndSomeBottleLeft(){
-        return this.keyboard.D && this.bottleAmount > 0 && this.bottleThrow.length < 1
+        return this.keyboard.D && this.bottleAmount > 0 && this.bottleThrow.length < 1;
+    }
+
+    bossFightNotStartet(){
+        return !this.level.enemies[3].startBossFight;
+    }
+
+    bossStartAnimationIsOver(){
+        return this.level.enemies[3].startAnimation == 6;
     }
 }

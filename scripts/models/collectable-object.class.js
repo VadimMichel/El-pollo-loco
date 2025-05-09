@@ -5,6 +5,12 @@ class CollectableObject extends MovableObject{
     amount = 0;
     coinAudioUrl = "audio/sound-effects-library-coin.mp3";
     bottleCollectAudioUrl = "audio/collect_bottle.mp3";
+    offset = {
+        top: 30,
+        left: 40,
+        right: 45,
+        bottom: 15
+    };
 
     IMAGES_Coin = [
         "img/8_coin/coin_1.png",
@@ -21,13 +27,21 @@ class CollectableObject extends MovableObject{
         if(array == "coin"){
             this.arrayCache = this.IMAGES_Coin;
             this.animate();
+            this.offset.top = 35;
+            this.offset.left = 35;
+            this.offset.right = 35;
+            this.offset.bottom = 35;
         }else if (array == "bottle"){
             this.arrayCache = this.IMAGES_BOTTTLE;
+            this.offset.top = 20;
+            this.offset.left = 35;
+            this.offset.right = 25;
+            this.offset.bottom = 15;
         }
         this.y = y;
         this.loadImage(this.arrayCache[this.randomZerroOrOne()]);
         this.loadImages(this.arrayCache);
-        this.x = 300 + Math.random() * 500;
+        this.x = 300 + Math.random() * 2000;
     }
 
     animate(){
