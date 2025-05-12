@@ -1,12 +1,13 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let startGame = false;
 let backgroundAudio = new Audio ("audio/latin-traditional-music-spanish-mexican-background-intro-theme-258024.mp3");
 
-function init(){
+function startGameBotton(){
     canvas = document.getElementById("content");
     world = new World(canvas, keyboard);
-    
+    document.getElementById("overlay").classList.add("d-none");
 }
 
 

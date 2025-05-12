@@ -32,22 +32,20 @@ class DrawableObject{
     //    }
     //}
 
-    drawFrameOfset(ctx) {
-        ctx.save();
-        ctx.strokeStyle = 'blue';
-        ctx.lineWidth = 2;
-        if(this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof CollectableObject){
-            ctx.strokeRect(
-                this.x + this.offset.left,
-                this.y + this.offset.top,
-                this.width - this.offset.left - this.offset.right,
-                this.height - this.offset.top - this.offset.bottom
-            );
-        }
-        
-    
-        ctx.restore();
-    }
+    //drawFrameOfset(ctx) {
+      //ctx.save();
+       // ctx.strokeStyle = 'blue';
+        //ctx.lineWidth = 2;
+        //if(this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof CollectableObject){
+        //    ctx.strokeRect(
+        //        this.x + this.offset.left,
+        //        this.y + this.offset.top,
+        //        this.width - this.offset.left - this.offset.right,
+        //        this.height - this.offset.top - this.offset.bottom
+        //    );
+        //}
+        //ctx.restore();
+    //}
 
     randomZerroOrOne(){
         let rndNummber = Math.random() * 10

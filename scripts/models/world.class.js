@@ -11,22 +11,8 @@ class World{
     healthBar = new StatusBar("health", 0, 20, 100);
     coinBar = new StatusBar("coin", 45, 20, 0);
     bottleBar = new StatusBar("bottle", 90, 20, 0);
-    bossHealthBar = new StatusBar("boss", 6, 400, 100);
+    bossHealthBar = new StatusBar("boss", 6, 440, 100);
     bottleThrow = [];
-    bottle = [
-        new CollectableObject("bottle", 330),
-        new CollectableObject("bottle", 330),
-        new CollectableObject("bottle", 330),
-        new CollectableObject("bottle", 330),
-        new CollectableObject("bottle", 330)
-    ];
-    coins = [
-        new CollectableObject("coin", 100),
-        new CollectableObject("coin", 100),
-        new CollectableObject("coin", 100),
-        new CollectableObject("coin", 100),
-        new CollectableObject("coin", 100)
-    ]
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext("2d");
@@ -59,13 +45,13 @@ class World{
             this.bottleThrow.forEach((throwObj, j) => {
                 if (this.doesBottleHitEnemy(object, array, throwObj)) {
                     object.getHit()
-                    this.bottleBreak(j);
+                    this.bottleBreak(j, this.bottleThrow, 8);
                     if(this.isTheObjectABoss(object)){
                         this.changeBossHealthBarAmount();
                         this.level.enemies[3].speed += 0.9;
                     }
                 }else if(this.bottleThrow[j].y > 300){
-                    this.bottleBreak(j);
+                    this.bottleBreak(j, this.bottleThrow, 8);
                 }
             });
         })
@@ -74,8 +60,8 @@ class World{
     run(){
         setInterval(() => {
             this.checkCollisions(this.level.enemies); 
-            this.checkCollisions(this.coins);
-            this.checkCollisions(this.bottle);
+            this.checkCollisions(this.level.coins);
+            this.checkCollisions(this.level.bottle);
             this.checkThrow();
             this.startBossFight();
         }, 10);
@@ -87,9 +73,9 @@ class World{
         }
     }
 
-    deleteImage(i){
-        if(this.bottleThrow[i].j == 6){
-            this.bottleThrow.splice(i, 1) 
+    deleteImage(i, array, immageArrayLength){
+        if(array[i].j < immageArrayLength){
+            array.splice(i, 1) 
        }
     }
 
@@ -109,9 +95,9 @@ class World{
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.coins);
+        this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.bottle);
+        this.addObjectsToMap(this.level.bottle);
         this.addObjectsToMap(this.bottleThrow);
         this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.camera_x, 0);
@@ -141,9 +127,8 @@ class World{
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrameOfset(this.ctx);
+        //mo.drawFrameOfset(this.ctx);
         //mo.drawFrame(this.ctx);
-        
         if(mo.otherDirection){
             this.flipImageBack(mo);
         }
@@ -161,12 +146,12 @@ class World{
         this.ctx.restore(); 
     }
 
-    bottleBreak(j){
+    bottleBreak(j, array, immageArrayLength){
         if(!this.bottleThrow[j].collided){
             this.bottleThrow[j].playAudio(this.bottleThrow[j].bottleBreaksAudioUrl, 0.1)
         }
         this.bottleThrow[j].collided = true;
-        this.deleteImage(j); 
+        this.deleteImage(j, array, immageArrayLength); 
     }
 
     isCharacterHitByEnemy(object, array){
@@ -193,29 +178,29 @@ class World{
     }
 
     collectCoin(i){
-        this.coins[i].playAudio(this.coins[i].coinAudioUrl, 0.2, false)
+        this.level.coins[i].playAudio(this.level.coins[i].coinAudioUrl, 0.2, false)
         this.coinAmount += 20;
         this.coinBar.setPercentage(this.coinAmount);
-        this.coins.splice(i, 1);
+        this.level.coins.splice(i, 1);
     }
 
     isCollectingCoin(object, array){
-        return this.character.isCollading(object) && array == this.coins
+        return this.character.isCollading(object) && array == this.level.coins;
     }
 
     doesCharactertouchBottle(object, array){
-        return this.character.isCollading(object) && array == this.bottle
+        return this.character.isCollading(object) && array == this.level.bottle
     }
 
     characterCollectBottle(i){
-        this.bottle[i].playAudio(this.bottle[i].bottleCollectAudioUrl, 0.2, false)
+        this.level.bottle[i].playAudio(this.level.bottle[i].bottleCollectAudioUrl, 0.2, false)
         this.bottleAmount += 20;
         this.bottleBar.setPercentage(this.bottleAmount);
-        this.bottle.splice(i, 1);
+        this.level.bottle.splice(i, 1);
     }
 
     doesBottleHitEnemy(object, array, throwObj){
-        return throwObj.isCollading(object) && array == this.level.enemies
+        return throwObj.isCollading(object) && array == this.level.enemies;
     }
 
     isTheObjectABoss(object){

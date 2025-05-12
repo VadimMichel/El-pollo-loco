@@ -21,8 +21,17 @@
     <script src="./levels/level1.js"></script>
     <script src="./scripts/game.js"></script>
 </head>
-<body onload="init()">
+<body>
     <h1>El pollo loco</h1>
     <canvas id="content" width="720" height="480"></canvas>
+    <div id="overlay" class="start-overlay">
+        <div class="button-container">
+            <button onclick="startGameBotton()" class="western-button">Start</button>
+            <button class="western-button">Mute</button>
+        </div>
+    </div>
+    <div class="loose-win-overlay">
+        <div class="win-lose-content" id="WinLoseContent"></div>
+    </div>
 </body>
 </html>
