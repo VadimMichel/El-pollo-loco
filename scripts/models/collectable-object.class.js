@@ -45,8 +45,6 @@ class CollectableObject extends MovableObject{
     }
 
     animate(){
-        setInterval(() => {
-           this.animateImage(this.arrayCache);
-        }, 300);
+        setStoppableInterval(() => this.animateImage(this.arrayCache), 300);
     }
 }

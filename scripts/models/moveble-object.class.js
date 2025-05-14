@@ -6,8 +6,9 @@ class MovableObject extends DrawableObject{
     energy = 100;
     lastHit = 0;
     path;
+    interval = [];
     i = 0;
-    j= 0;
+    j = 0;
     offset = {
         top: 0,
         left: 0,
@@ -16,13 +17,15 @@ class MovableObject extends DrawableObject{
     };
 
     applyGravity(){
-        setInterval(() =>{
-            if((this.limitationYGround() || this.speedY > 0) && !this.collided){
-                console.log(this.speedY);
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-            }
-        }, 1000 / 25)
+        setStoppableInterval(() => this.gravitySettings(), 1000/25);
+    }
+
+    gravitySettings(){
+        if((this.limitationYGround() || this.speedY > 0) && !this.collided){
+            console.log(this.speedY);
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+        }
     }
 
     limitationYGround(){

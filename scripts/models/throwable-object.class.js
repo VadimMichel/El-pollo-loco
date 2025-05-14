@@ -45,13 +45,15 @@ class ThrowableObject extends MovableObject{
     }
 
     animate(){
-        setInterval(() =>{
-            if(this.collided){
-                this.animateImage(this.IMAGES_BOTTLE_SPLASH);
-                this.j++
-            }else{
-                this.animateImage(this.IMAGES_BOTTLE_ROTATION);
-            }
-        }, 100)
+        setStoppableInterval(() => this.animateBottle(), 100);
+    }
+
+    animateBottle(){
+        if(this.collided){
+            this.animateImage(this.IMAGES_BOTTLE_SPLASH);
+            this.j++
+        }else{
+            this.animateImage(this.IMAGES_BOTTLE_ROTATION);
+        }
     }
 }

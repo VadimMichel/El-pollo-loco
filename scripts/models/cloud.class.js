@@ -5,8 +5,9 @@ class Cloud extends MovableObject{
     x;
     speed;
 
-    constructor (){
+    constructor (world){
         super()
+        this.world = world
         if(this.randomZerroOrOne() == 1){
             this.loadImage("img/5_background/layers/4_clouds/1.png");
         }else{
@@ -18,8 +19,6 @@ class Cloud extends MovableObject{
     }
 
     animate(){
-        setInterval(() => {
-            this.moveLeft();
-        }, 50);
+        setStoppableInterval(() => this.moveLeft(), 50);
     }
 }

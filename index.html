@@ -24,6 +24,11 @@
 </head>
 <body>
     <h1>El pollo loco</h1>
+    <div class="icons setting-botton">
+        <img src="./img/icon/volume-off-solid.svg" alt="volume off">
+        <img src="./img/icon/volume-xmark-solid.svg" alt="volume on">
+        <img onclick="restartGame()" src="./img/icon/reply-solid.svg" alt="replay">
+    </div>
     <canvas id="content" width="720" height="480"></canvas>
     <div id="overlay" class="start-overlay">
         <div class="button-container">
@@ -31,11 +36,21 @@
             <button class="western-button">Mute</button>
         </div>
     </div>
+    <div class="keys icons">
+        <div>
+            <img id="btnLeft" src="./img/icon/caret-left-solid.svg" alt="arrow-left">
+            <img id="btnRight" src="./img/icon/caret-right-solid.svg" alt="arrow-right">
+        </div>
+        <div>
+            <img id="btnUp" src="./img/icon/caret-up-solid.svg" alt="arrow-up">
+            <img id="btnThrow" src="./img/icon/wine-bottle-solid.svg" alt="bottle">
+        </div>
+    </div>
     <div class="key-info">
-        <span>key assignmen:</span>
-        <img src="./img/icon/caret-left-solid.svg" alt=""><span>: Left |</span>
-        <img src="./img/icon/caret-right-solid.svg" alt=""><span>: right |</span>
-        <img src="./img/icon/caret-up-solid.svg" alt=""> <span>/ space : jump |</span> 
+        <span>key bindings:</span>
+        <img src="./img/icon/caret-left-solid.svg" alt="arrow-left"><span>: Left |</span>
+        <img src="./img/icon/caret-right-solid.svg" alt="arrow-right"><span>: right |</span>
+        <img src="./img/icon/caret-up-solid.svg" alt="arrow-up"> <span>/ space : jump |</span> 
         <span>trow : D</span>
     </div>
     <div class="loose-win-overlay">

@@ -3,7 +3,6 @@ class Endboss extends MovableObject{
     height = 400;
     y = 45;
     recievedDamage = 20;
-    world;
     startBossFight = false;
     startAnimation = 0;
     speed = 3;
@@ -56,7 +55,8 @@ class Endboss extends MovableObject{
     ];
 
     constructor(){
-        super().loadImage(this.IMAGES_WALKING[0]);
+        super()
+        this.loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
@@ -64,31 +64,33 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_ATTACK);
         this.x = 2800;
         this.animate();
-        
     }
 
     animate(){
-        setInterval(() =>{
-            if(this.isDead()){
-                this.animateImage(this.IMAGES_DEAD);
-            }else if(this.isHurt()){
-                this.animateImage(this.IMAGES_HURT);
-            }else if(this.startBossFight && this.x > 2500){
-                this.animateImage(this.IMAGES_WALKING);
-            }else if (this.startBossFight && this.x > 2490 && this.startAnimation < this.IMAGES_ALERT.length +1){
-                this.animateImage(this.IMAGES_ALERT);
-                this.startAnimation++
-                console.log(this.startAnimation)
-            }else if (this.startAnimation >= this.IMAGES_WALKING.length +1){
-                this.j = 0;
-                this.animateImage(this.IMAGES_ATTACK);
-            }
-        }, 200)
+        setStoppableInterval(() => this.animateEndboss(), 200);
+        setStoppableInterval(() => this.makeBoosMoveLeft(), 100);
+    }
 
-        setInterval(() => {
-            if((this.startBossFight && this.x > 2500 && !this.isDead()) || (this.startAnimation >= this.IMAGES_WALKING.length +1 && !this.isDead())){
-                this.moveLeft();
-            }
-        }, 100);
+    makeBoosMoveLeft(){
+        if((this.startBossFight && this.x > 2500 && !this.isDead()) || (this.startAnimation >= this.IMAGES_WALKING.length +1 && !this.isDead())){
+            this.moveLeft();
+        }
+    }
+
+    animateEndboss(){
+        if(this.isDead()){
+            this.animateImage(this.IMAGES_DEAD);
+        }else if(this.isHurt()){
+            this.animateImage(this.IMAGES_HURT);
+        }else if(this.startBossFight && this.x > 2500){
+            this.animateImage(this.IMAGES_WALKING);
+        }else if (this.startBossFight && this.x > 2490 && this.startAnimation < this.IMAGES_ALERT.length +1){
+            this.animateImage(this.IMAGES_ALERT);
+            this.startAnimation++
+            console.log(this.startAnimation)
+        }else if (this.startAnimation >= this.IMAGES_WALKING.length +1){
+            this.j = 0;
+            this.animateImage(this.IMAGES_ATTACK);
+        }  
     }
 }

@@ -18,14 +18,13 @@ class World{
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
-        this.draw();
         this.setWorld();
+        this.draw();
         this.run();
     }
 
     setWorld(){
         this.character.world = this;
-        this.level.enemies[3].world = this;
     }
 
     checkCollisions(array){
@@ -58,13 +57,15 @@ class World{
     }
 
     run(){
-        setInterval(() => {
-            this.checkCollisions(this.level.enemies); 
-            this.checkCollisions(this.level.coins);
-            this.checkCollisions(this.level.bottle);
-            this.checkThrow();
-            this.startBossFight();
-        }, 10);
+        setStoppableInterval(() => this.events(), 10);
+    }
+
+    events(){
+        this.checkCollisions(this.level.enemies); 
+        this.checkCollisions(this.level.coins);
+        this.checkCollisions(this.level.bottle);
+        this.checkThrow();
+        this.startBossFight();
     }
 
     startBossFight(){
