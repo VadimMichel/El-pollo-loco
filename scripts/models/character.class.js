@@ -97,7 +97,7 @@ class Character extends MovableObject{
     animate(){
         setStoppableInterval(() => this.makeCharacterMove(), 1000/60);
         setStoppableInterval(() => this.animateCharacter(), 100);
-        setStoppableInterval(() => this.playRunSound(), 180); 
+        setStoppableInterval(() => this.playRunSound(), 140); 
     }
 
     makeCharacterMove(){
@@ -109,7 +109,7 @@ class Character extends MovableObject{
         }
         if(this.world.keyboard.UP && !this.limitationYGround() || this.world.keyboard.SPACE && !this.limitationYGround()){
             this.jump();
-            this.playAudio(this.characterJumpAudioUrl, 0.2, false)
+            GameSounds.playAudio(GameSounds.JUMP, 0.4, false);
             this.notMoving = 0;
         }
         this.world.camera_x = -this.x + 100;
@@ -117,7 +117,7 @@ class Character extends MovableObject{
 
     playRunSound(){
         if((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.limitationYGround()){
-            this.playAudio(this.characterRunAudioUrl, 0.4, false);
+            GameSounds.playAudio(GameSounds.STEP, 0.4, false);
         }
     }
 

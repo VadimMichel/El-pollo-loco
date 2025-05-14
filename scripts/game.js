@@ -3,11 +3,16 @@ let world;
 let intervalIds =[];
 let keyboard = new Keyboard();
 let startGame = false;
-let backgroundAudio = new Audio ("audio/latin-traditional-music-spanish-mexican-background-intro-theme-258024.mp3");
+
+function init(){
+    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
+    
+}
 
 function startGameBotton(){
     canvas = document.getElementById("content");
     initLevel();
+    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
     world = new World(canvas, keyboard);
     document.getElementById("overlay").classList.add("d-none");
 }

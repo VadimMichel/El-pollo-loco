@@ -6,6 +6,7 @@
     <title>El Pollo Loco</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./fonts.css">
+    <script src="./scripts/models/game-sounds.class.js"></script>
     <script src="./scripts/models/drawable-object.class.js"></script>
     <script src="./scripts/models/moveble-object.class.js"></script>
     <script src="./scripts/models/character.class.js"></script>
@@ -22,18 +23,19 @@
     <script src="./levels/level1.js"></script>
     <script src="./scripts/game.js"></script>
 </head>
-<body>
+<body onload="init()">
     <h1>El pollo loco</h1>
     <div class="icons setting-botton">
-        <img src="./img/icon/volume-off-solid.svg" alt="volume off">
-        <img src="./img/icon/volume-xmark-solid.svg" alt="volume on">
+        <img class="d-none" id="unMuteButton" onclick="GameSounds.unMuteGame('')" src="./img/icon/volume-off-solid.svg" alt="volume off">
+        <img id="muteButton" onclick="GameSounds.muteGame('')" src="./img/icon/volume-xmark-solid.svg" alt="volume on">
         <img onclick="restartGame()" src="./img/icon/reply-solid.svg" alt="replay">
     </div>
     <canvas id="content" width="720" height="480"></canvas>
     <div id="overlay" class="start-overlay">
         <div class="button-container">
             <button onclick="startGameBotton()" class="western-button">Start</button>
-            <button class="western-button">Mute</button>
+            <button id="muteButtonStartScreen" onclick="GameSounds.muteGame('StartScreen')" class="western-button">Mute</button>
+            <button id="unMuteButtonStartScreen" onclick="GameSounds.unMuteGame('StartScreen')" class="western-button d-none">Unmute</button>
         </div>
     </div>
     <div class="keys icons">

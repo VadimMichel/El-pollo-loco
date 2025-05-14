@@ -149,7 +149,7 @@ class World{
 
     bottleBreak(j, array, immageArrayLength){
         if(!this.bottleThrow[j].collided){
-            this.bottleThrow[j].playAudio(this.bottleThrow[j].bottleBreaksAudioUrl, 0.1)
+            GameSounds.playAudio(GameSounds.GLASS_SHATTER, 0.1, false);
         }
         this.bottleThrow[j].collided = true;
         this.deleteImage(j, array, immageArrayLength); 
@@ -161,7 +161,7 @@ class World{
 
     characterisHitByEnemy(){
         if(!this.character.isHurt() && !this.character.isDead()){
-            this.character.playAudio(this.character.characterHurtAudioUrl, 0.2, false)
+            GameSounds.playAudio(GameSounds.HURT_SOUND, 0.2, false);
             this.character.j = 0;
         }
         this.character.getHit();
@@ -169,7 +169,7 @@ class World{
     }
 
     characterJumpOnEnemy(i, object){
-        this.level.enemies[i].playAudio(this.level.enemies[i].chichenHurtAudioUrl, 0.1, false)
+        GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
         object.getHit();
         this.character.jump();
     }
@@ -177,9 +177,9 @@ class World{
     doesCharacterJumpOnEnemy(object, array){
         return this.character.isCollidingFromTop(object) && array == this.level.enemies && !object.isDead() && this.character.speedY < 0;
     }
-
+    
     collectCoin(i){
-        this.level.coins[i].playAudio(this.level.coins[i].coinAudioUrl, 0.2, false)
+        GameSounds.playAudio(GameSounds.COIN, 0.2, false)
         this.coinAmount += 20;
         this.coinBar.setPercentage(this.coinAmount);
         this.level.coins.splice(i, 1);
@@ -194,7 +194,7 @@ class World{
     }
 
     characterCollectBottle(i){
-        this.level.bottle[i].playAudio(this.level.bottle[i].bottleCollectAudioUrl, 0.2, false)
+        GameSounds.playAudio(GameSounds.COLLECT_BOTTLE, 0.2, false);
         this.bottleAmount += 20;
         this.bottleBar.setPercentage(this.bottleAmount);
         this.level.bottle.splice(i, 1);
