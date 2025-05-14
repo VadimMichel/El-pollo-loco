@@ -73,7 +73,7 @@ class Endboss extends MovableObject{
 
     makeBoosMoveLeft(){
         if((this.startBossFight && this.x > 2500 && !this.isDead()) || (this.startAnimation >= this.IMAGES_WALKING.length +1 && !this.isDead())){
-            this.moveLeft();
+            this.moveLeft(this.speed);
         }
     }
 

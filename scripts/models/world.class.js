@@ -13,6 +13,7 @@ class World{
     bottleBar = new StatusBar("bottle", 90, 20, 0);
     bossHealthBar = new StatusBar("boss", 6, 440, 100);
     bottleThrow = [];
+    playedSound = false;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext("2d");
@@ -43,11 +44,13 @@ class World{
             }
             this.bottleThrow.forEach((throwObj, j) => {
                 if (this.doesBottleHitEnemy(object, array, throwObj)) {
-                    object.getHit()
+                    GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
+                    object.getHit();
                     this.bottleBreak(j, this.bottleThrow, 8);
                     if(this.isTheObjectABoss(object)){
                         this.changeBossHealthBarAmount();
-                        this.level.enemies[3].speed += 0.9;
+                        object.speed++;
+                        console.log(object)
                     }
                 }else if(this.bottleThrow[j].y > 300){
                     this.bottleBreak(j, this.bottleThrow, 8);
@@ -66,11 +69,29 @@ class World{
         this.checkCollisions(this.level.bottle);
         this.checkThrow();
         this.startBossFight();
+        this.gameOver();
     }
 
     startBossFight(){
         if(this.character.x > 2150){
             this.level.enemies[3].startBossFight = true;
+        }
+    }
+
+    gameOver(){
+        if(this.character.isDead() && !this.playedSound){
+            GameSounds.BACKGROUND_MUSIK.pause();
+            GameSounds.playAudio(GameSounds.LOSE, 0.2, false);
+            setStoppableInterval(() => stopGame(), 2000);
+            document.getElementById("winLoseContent").classList.remove("d-none");
+            this.playedSound = true;
+        }else if(this.level.enemies[3].isDead() && !this.playedSound){
+            GameSounds.BACKGROUND_MUSIK.pause();
+            GameSounds.playAudio(GameSounds.WIN, 0.2, false);
+            setStoppableInterval(() => stopGame(), 2000);
+            document.getElementById("winLoseContent").classList.remove("d-none");
+            document.getElementById("winLoseContentImg").innerHTML = '<img src="./img/You won, you lost/You Win A.png" alt="">'
+            this.playedSound = true;
         }
     }
 

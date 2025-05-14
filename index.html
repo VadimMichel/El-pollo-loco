@@ -23,7 +23,7 @@
     <script src="./levels/level1.js"></script>
     <script src="./scripts/game.js"></script>
 </head>
-<body onload="init()">
+<body>
     <h1>El pollo loco</h1>
     <div class="icons setting-botton">
         <img class="d-none" id="unMuteButton" onclick="GameSounds.unMuteGame('')" src="./img/icon/volume-off-solid.svg" alt="volume off">
@@ -31,11 +31,9 @@
         <img onclick="restartGame()" src="./img/icon/reply-solid.svg" alt="replay">
     </div>
     <canvas id="content" width="720" height="480"></canvas>
-    <div id="overlay" class="start-overlay">
+    <div id="overlay" class="overlay">
         <div class="button-container">
             <button onclick="startGameBotton()" class="western-button">Start</button>
-            <button id="muteButtonStartScreen" onclick="GameSounds.muteGame('StartScreen')" class="western-button">Mute</button>
-            <button id="unMuteButtonStartScreen" onclick="GameSounds.unMuteGame('StartScreen')" class="western-button d-none">Unmute</button>
         </div>
     </div>
     <div class="keys icons">
@@ -55,8 +53,11 @@
         <img src="./img/icon/caret-up-solid.svg" alt="arrow-up"> <span>/ space : jump |</span> 
         <span>trow : D</span>
     </div>
-    <div class="loose-win-overlay">
-        <div class="win-lose-content" id="WinLoseContent"></div>
+    <div class="overlay">
+        <div id="winLoseContent" class="win-lose-content d-none" >
+            <div id="winLoseContentImg"><img src="./img/You won, you lost/Game over A.png" alt=""></div>
+            <button onclick="restartGame()" class="western-button">play again</button>
+        </div>
     </div>
 </body>
 </html>

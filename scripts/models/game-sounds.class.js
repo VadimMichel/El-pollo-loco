@@ -42,10 +42,13 @@ class GameSounds{
     }
         
     static playAudio(audio, volume, loop){
-        if(!GameSounds.mute){
-            audio.volume = volume;
-            audio.loop = loop;
-            audio.play();
-        } 
+        let intervalSound = setInterval(() => {
+            if(!GameSounds.mute && audio.readyState == 4){
+                audio.volume = volume;
+                audio.loop = loop;
+                audio.play();
+                clearInterval(intervalSound);
+            } 
+        }, 200)
     }
 }

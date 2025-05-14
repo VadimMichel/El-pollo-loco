@@ -4,17 +4,14 @@ let intervalIds =[];
 let keyboard = new Keyboard();
 let startGame = false;
 
-function init(){
-    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
-    
-}
-
 function startGameBotton(){
     canvas = document.getElementById("content");
     initLevel();
-    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
     world = new World(canvas, keyboard);
     document.getElementById("overlay").classList.add("d-none");
+    document.getElementById("winLoseContent").classList.add("d-none");
+    world.playedSound = false;
+    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.1, true);
 }
 
 function stopGame(){
