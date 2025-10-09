@@ -5,7 +5,7 @@ class ThrowableObject extends MovableObject{
     speed = 30;
     x = 50;
     y = 50;
-    j = 0;
+    k = 0;
     bottleBreaksAudioUrl = "audio/glass-shatter-3-100155.mp3";
     
     IMAGES_BOTTLE_ROTATION = [
@@ -51,7 +51,7 @@ class ThrowableObject extends MovableObject{
     animateBottle(){
         if(this.collided){
             this.animateImage(this.IMAGES_BOTTLE_SPLASH);
-            this.j++
+            this.k++
         }else{
             this.animateImage(this.IMAGES_BOTTLE_ROTATION);
         }

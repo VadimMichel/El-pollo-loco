@@ -3,6 +3,7 @@ class Chicken extends MovableObject{
     height = 100;
     x;
     y = 330;
+    k = 0;
     speed;
     recievedDamage = 100;
     chichenHurtAudioUrl = "audio/chicken-noise-196746.mp3";
@@ -66,7 +67,9 @@ class Chicken extends MovableObject{
     
     animateChicken(){
         if(this.isDead()){
-            this.animateImage(this.ImageCacheDead);
+            this.k++;
+            this.animateImage(this.ImageCacheDead); 
+            
         }else{
             this.animateImage(this.ImageCacheWalking);
         }
