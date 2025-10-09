@@ -46,14 +46,13 @@ class World{
                 if (this.doesBottleHitEnemy(object, array, throwObj)) {
                     GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
                     object.getHit();
-                    this.bottleBreak(j, this.bottleThrow, 8);
+                    this.bottleBreak(j, throwObj, 5, this.bottleThrow);
                     if(this.isTheObjectABoss(object)){
                         this.changeBossHealthBarAmount();
-                        object.speed++;
-                        console.log(object)
+                        object.speed += 0.3;
                     }
                 }else if(this.bottleThrow[j].y > 300){
-                    this.bottleBreak(j, this.bottleThrow, 8);
+                    this.bottleBreak(j, throwObj, 5, this.bottleThrow);
                 }
             });
         })
@@ -95,8 +94,8 @@ class World{
         }
     }
 
-    deleteImage(i, array, immageArrayLength){
-        if(array[i].j < immageArrayLength){
+    deleteImage(i, object, immageArrayLength, array){
+        if(object.k > immageArrayLength){
             array.splice(i, 1) 
        }
     }
@@ -168,12 +167,12 @@ class World{
         this.ctx.restore(); 
     }
 
-    bottleBreak(j, array, immageArrayLength){
+    bottleBreak(j, object, immageArrayLength, array){
         if(!this.bottleThrow[j].collided){
             GameSounds.playAudio(GameSounds.GLASS_SHATTER, 0.1, false);
         }
-        this.bottleThrow[j].collided = true;
-        this.deleteImage(j, array, immageArrayLength); 
+        object.collided = true;
+        this.deleteImage(j, object, immageArrayLength, array); 
     }
 
     isCharacterHitByEnemy(object, array){
@@ -192,6 +191,7 @@ class World{
     characterJumpOnEnemy(i, object){
         GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
         object.getHit();
+        this.deleteImage(i, object, 0, this.level.enemies);
         this.character.jump();
     }
 
