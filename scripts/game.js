@@ -5,10 +5,13 @@ let keyboard = new Keyboard();
 let startGame = false;
 
 function startGameBotton(){
+    wrapperRef = document.getElementById("contentWrapper")
+    wrapperRef.innerHTML = ""
+    wrapperRef.innerHTML = `<canvas id="content" width="720" height="480"></canvas>`
     canvas = document.getElementById("content");
     initLevel();
     world = new World(canvas, keyboard);
-    document.getElementById("overlay").classList.add("d-none");
+    document.getElementById("topBtnContent").classList.remove("d-none");
     document.getElementById("winLoseContent").classList.add("d-none");
     world.playedSound = false;
     GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.1, true);
@@ -26,6 +29,11 @@ function setStoppableInterval(fn, time){
 function restartGame(){
     stopGame();
     startGameBotton();
+}
+
+function displayGamePad(){
+    gamepad = document.getElementById("gamepadContent");
+    gamepad.classList.toggle("fullscreen-hide");
 }
 
 window.addEventListener("keydown", (event) => {

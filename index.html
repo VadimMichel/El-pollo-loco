@@ -22,21 +22,20 @@
     <script src="./scripts/models/level.class.js"></script>
     <script src="./levels/level1.js"></script>
     <script src="./scripts/game.js"></script>
+    <link rel="shortcut icon" href="./img/icon/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <h1>El pollo loco</h1>
-    <div class="icons setting-botton">
+    <div id="topBtnContent" class="d-none icons setting-botton">
         <img class="d-none" id="unMuteButton" onclick="GameSounds.unMuteGame('')" src="./img/icon/volume-off-solid.svg" alt="volume off">
         <img id="muteButton" onclick="GameSounds.muteGame('')" src="./img/icon/volume-xmark-solid.svg" alt="volume on">
         <img onclick="restartGame()" src="./img/icon/reply-solid.svg" alt="replay">
+        <img onclick="displayGamePad()" src="./img/icon/gamepad-solid.svg" alt="gamepad">
     </div>
-    <canvas id="content" width="720" height="480"></canvas>
-    <div id="overlay" class="overlay">
-        <div class="button-container">
-            <button onclick="startGameBotton()" class="western-button">Start</button>
-        </div>
+    <div class="button-container" id="contentWrapper">
+        <button onclick="startGameBotton()" class="western-button">Start</button>
     </div>
-    <div class="keys icons">
+    <div id="gamepadContent" class="keys icons fullscreen-hide">
         <div>
             <img id="btnLeft" src="./img/icon/caret-left-solid.svg" alt="arrow-left">
             <img id="btnRight" src="./img/icon/caret-right-solid.svg" alt="arrow-right">
@@ -48,11 +47,16 @@
     </div>
     <div class="key-info">
         <span>key bindings:</span>
-        <img src="./img/icon/caret-left-solid.svg" alt="arrow-left"><span>: Left |</span>
-        <img src="./img/icon/caret-right-solid.svg" alt="arrow-right"><span>: right |</span>
-        <img src="./img/icon/caret-up-solid.svg" alt="arrow-up"> <span>/ space : jump |</span> 
-        <span>trow : D</span>
+        <div>
+            <img src="./img/icon/caret-left-solid.svg" alt="arrow-left"><span>: Left |</span>
+            <img src="./img/icon/caret-right-solid.svg" alt="arrow-right"><span>: right |</span>
+        </div>
+        <div>
+            <img src="./img/icon/caret-up-solid.svg" alt="arrow-up"> <span>/ space : jump |</span> 
+            <span>trow : D</span>
+        </div>
     </div>
+    <a class="link" target="blank" href="./imressum.html">Impressum</a>
     <div class="overlay">
         <div id="winLoseContent" class="win-lose-content d-none" >
             <div id="winLoseContentImg"><img src="./img/You won, you lost/Game over A.png" alt=""></div>

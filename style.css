@@ -17,7 +17,6 @@ body{
 }
 
 canvas{
-  margin-top: -19px;
   background-color: black;
   display: block;
   border-radius: 12px;
@@ -39,7 +38,8 @@ canvas{
 }
 
 .win-lose-content{
-  margin-top: 82px;
+  z-index: 4;
+  margin-bottom: -57px;
   border-radius: 12px;
   width: 720px;
   height: 480px;
@@ -51,11 +51,10 @@ canvas{
 }
 
 .button-container {
-  margin-top: 80px;
   display: flex;
   justify-content: center;
   gap: 20px;
-  z-index: 3;
+  z-index: 2;
   width: 720px;
   height: 480px;
   background-size: cover;
@@ -94,9 +93,7 @@ h1{
   z-index: 3;
 }
 
-.d-none{
-  display: none;
-}
+
 
 .key-info img{
   width: 24px;
@@ -114,7 +111,7 @@ h1{
   width: 640px;
   margin-left: 24px;
   margin-right: 24px;
-  z-index: 3;
+  z-index: 4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,7 +126,7 @@ h1{
 
 .setting-botton{
   z-index: 3;
-  margin-bottom: -27px;
+  margin-bottom: -40px;
   padding-top: 20px;
   gap: 12px;
 }
@@ -141,6 +138,7 @@ h1{
 .keys{
   margin-top: -60px;
   justify-content: space-between;
+  height: 60px;
 }
 
 .keys img{
@@ -149,13 +147,21 @@ h1{
   margin-bottom: 30px;
 }
 
-@media (min-width: 720px) {
-  .keys{
-    display: none;
-  }
+#rotateOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  font-size: 2em;
+  text-align: center;
+  padding-top: 40vh;
+  z-index: 9999;
+}
 
-  .button-container{
-    margin-top: 83px;
+@media (min-width: 720px) {
+  .fullscreen-hide{
+    display: none;
   }
 }
 
@@ -166,12 +172,39 @@ h1{
 
   .keys{
     width: 100%;
+    margin-top: -64px;
+  }
+
+  .icons{
+    width: 100%;
+  }
+
+  .win-lose-content{
+    width: 100%;
+  }
+
+  .button-container{
+    width: 100%;
+    margin-top:0;
+  }
+
+  #rotateOverlay{
+    display: block;
   }
 }
-@media only screen and (max-width: 620px) {
 
-  .keys{
-    margin-top: -30px;
+@media only screen and (max-width: 620px) {
+.keys{
+    margin-top: -33px;
+    height: 0px;
+  }
+
+  .win-lose-content{
+    margin-bottom: 8px;
+  }
+
+  .key-info{
+    flex-direction: column;
   }
 }
 
@@ -180,7 +213,46 @@ h1{
     height: 100vh;
   }
 
+  canvas{
+    width: 100%;
+  }
+
+  .win-lose-content{
+    height: 100vh;
+    margin-top: -24px;
+  }
+
+  .win-lose-content{
+    margin-bottom: 0px;
+  }
+
+  .button-container{
+    height: 100vh;
+    margin-top: 0;
+  }
+
   h1{
     display: none;
   }
+
+  .key-info{
+    display: none;
+  }
+
+  .link{
+    display: none;
+  }
+
+  .setting-botton{
+    padding-top: 0;
+    margin-bottom: -28px;
+  }
+
+  #rotateOverlay {
+    display: block;
+  }
+}
+
+.d-none{
+  display: none;
 }
