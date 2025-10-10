@@ -9,6 +9,12 @@ class Chicken extends MovableObject{
     chichenHurtAudioUrl = "audio/chicken-noise-196746.mp3";
     ImageCacheDead;
     ImageCacheWalking;
+     offset = {
+        top: 15,
+        left: 10,
+        right: 10,
+        bottom: 15
+    };
 
     IMAGES_WALKING_NORMAL =[
         "img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
