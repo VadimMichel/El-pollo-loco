@@ -101,7 +101,7 @@ class Character extends MovableObject{
     }
 
     makeCharacterMove(){
-        if(this.world.keyboard.LEFT && this.x > -617){
+        if(this.world.keyboard.LEFT && this.x > -616){
             this.moveLeft();
             this.otherDirection = true;
         }if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x){
