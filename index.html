@@ -32,8 +32,16 @@
         <img onclick="restartGame()" src="./img/icon/reply-solid.svg" alt="replay">
         <img onclick="displayGamePad()" src="./img/icon/gamepad-solid.svg" alt="gamepad">
     </div>
-    <div class="button-container" id="contentWrapper">
-        <button onclick="startGameBotton()" class="western-button">START</button>
+    <div>
+        <div class="button-container" id="contentWrapper">
+            <button onclick="startGameBotton()" class="western-button">START</button>
+        </div>
+        <div id="winLoseContent" class="overlay d-none">
+        <div  class="win-lose-content" >
+            <div id="winLoseContentImg"><img src="./img/You won, you lost/Game over A.png" alt=""></div>
+            <button onclick="restartGame()" class="western-button">PLAY AGAIN</button>
+        </div>
+    </div>
     </div>
     <div id="gamepadContent" class="keys icons fullscreen-hide">
         <div>
@@ -57,11 +65,5 @@
         </div>
     </div>
     <a class="link" target="blank" href="./imressum.html">Impressum</a>
-    <div class="overlay">
-        <div id="winLoseContent" class="win-lose-content d-none" >
-            <div id="winLoseContentImg"><img src="./img/You won, you lost/Game over A.png" alt=""></div>
-            <button onclick="restartGame()" class="western-button">PLAY AGAIN</button>
-        </div>
-    </div>
 </body>
 </html>

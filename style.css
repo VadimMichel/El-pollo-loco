@@ -23,7 +23,6 @@ body{
   box-sizing: border-box;
   text-decoration: none;
   scroll-behavior: smooth;
-  z-index: 1;
 }
 
 canvas{
@@ -33,12 +32,12 @@ canvas{
 }
 
 .overlay{
-  height: 100vh;
+  height: 100%;
   width: 100%;
   position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 0;
+  left: 0;
+  z-index: 4;
 }
 
 .win-lose-content img{
@@ -49,7 +48,6 @@ canvas{
 
 .win-lose-content{
   z-index: 4;
-  margin-bottom: -57px;
   border-radius: 12px;
   width: 720px;
   height: 480px;
@@ -103,8 +101,6 @@ h1{
   z-index: 3;
 }
 
-
-
 .key-info img{
   width: 24px;
   height: 24px;
@@ -141,7 +137,6 @@ h1{
 .setting-botton{
   z-index: 3;
   margin-bottom: -40px;
-  padding-top: 20px;
   gap: 12px;
 }
 
