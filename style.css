@@ -13,7 +13,8 @@ body{
   background-attachment: fixed;
   position: relative;
   font-family: 'IM Fell English SC';
-  font-size: 24px;
+  font-size: 21px;
+  color: black;
 }
 
 *{
@@ -22,6 +23,13 @@ body{
   box-sizing: border-box;
   text-decoration: none;
   scroll-behavior: smooth;
+}
+
+a{
+  color: black;
+  &:hover{
+    text-decoration: underline;
+  }
 }
 
 canvas{
@@ -197,9 +205,7 @@ h1{
   #rotateOverlay{
     display: block;
   }
-}
 
-@media only screen and (max-width: 620px) {
   .key-info{
     flex-direction: column;
   }
