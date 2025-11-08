@@ -80,15 +80,16 @@ canvas{
   
 .western-button {
   height: 40px;
-  background-color: #8b4513;
-  border: 4px solid #654321;
+  background-color: #ffb600;
+  border: 4px solid #a43d18;
   border-radius: 8px;
-  color: #fff8dc;
+  color: #41220a;
   padding: 15px 30px;
   font-size: 20px;
   font-family: 'IM Fell English SC', serif;
+  font-weight: 700;
   text-transform: uppercase;
-  box-shadow: 3px 3px 0 #000;
+  box-shadow: 3px 3px 0 #41220a;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   z-index: 5;
@@ -103,7 +104,7 @@ h1{
 }
   
 .western-button:hover {
-  background: #d2691e;
+  background: #f9cc45;
   transform: scale(1.05);
   z-index: 5;
 }
@@ -172,6 +173,11 @@ h1{
   text-align: center;
   padding-top: 40vh;
   z-index: 9999;
+}
+
+.d-flex{
+  display: flex;
+  gap: 40px;
 }
 
 @media (min-width: 720px) {

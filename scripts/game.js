@@ -6,12 +6,11 @@ let startGame = false;
 
 function getFromLocalStorage() {
     let isSoundMuted = JSON.parse(localStorage.getItem("soundMute"));
+    const id = '';
 
     if (isSoundMuted === null) {
         isSoundMuted = false;
     }
-
-    const id = '';
 
     if (isSoundMuted) {
         GameSounds.muteGame(id);
@@ -125,3 +124,7 @@ window.addEventListener('DOMContentLoaded', () => {
         keyboard.D = false;
     });
 });
+
+function reloadPage(){
+    location.reload();
+}
