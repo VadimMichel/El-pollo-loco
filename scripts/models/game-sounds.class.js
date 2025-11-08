@@ -9,7 +9,7 @@ class GameSounds{
     static COIN = new Audio("./audio/sound-effects-library-coin.mp3");
     static STEP = new Audio("./audio/step.mp3");
     static WIN = new Audio("./audio/win.mp3");
-    static mute = false;
+    mute = false;
 
     static allSounds = [
         GameSounds.CHICKEN_NOISE,
@@ -29,16 +29,17 @@ class GameSounds{
             sound.pause();
         });
         GameSounds.mute = true;
+        localStorage.setItem("soundMute", JSON.stringify(true));
         document.getElementById(`muteButton${id}`).classList.toggle("d-none");
         document.getElementById(`unMuteButton${id}`).classList.toggle("d-none");
     }
 
     static unMuteGame(id){
         GameSounds.mute = false;
+        localStorage.setItem("soundMute", JSON.stringify(false));
         GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
         document.getElementById(`muteButton${id}`).classList.toggle("d-none");
         document.getElementById(`unMuteButton${id}`).classList.toggle("d-none");
-        console.log(`unMuteButton${id}`)
     }
         
     static playAudio(audio, volume, loop){

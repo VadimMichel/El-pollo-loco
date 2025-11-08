@@ -24,7 +24,7 @@
     <script src="./scripts/game.js"></script>
     <link rel="shortcut icon" href="./img/icon/favicon.ico" type="image/x-icon">
 </head>
-<body>
+<body onload="getFromLocalStorage()">
     <h1>EL POLLO LOCO</h1>
     <div id="topBtnContent" class="d-none icons setting-botton">
         <img class="d-none" id="unMuteButton" onclick="GameSounds.unMuteGame('')" src="./img/icon/volume-off-solid.svg" alt="volume off">

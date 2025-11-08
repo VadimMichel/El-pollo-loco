@@ -4,6 +4,22 @@ let intervalIds =[];
 let keyboard = new Keyboard();
 let startGame = false;
 
+function getFromLocalStorage() {
+    let isSoundMuted = JSON.parse(localStorage.getItem("soundMute"));
+
+    if (isSoundMuted === null) {
+        isSoundMuted = false;
+    }
+
+    const id = '';
+
+    if (isSoundMuted) {
+        GameSounds.muteGame(id);
+    } else {
+        GameSounds.unMuteGame(id);
+    }
+}
+
 function startGameBotton(){
     wrapperRef = document.getElementById("contentWrapper")
     wrapperRef.innerHTML = ""
