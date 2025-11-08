@@ -43,26 +43,21 @@ class StatusBar extends DrawableObject{
 
     constructor(array, y, x, persentage){
         super();
-        if(array == "coin"){
-            this.arrayCache = this.IMAGES_COIN;
-        }else if (array == "health" ){
-            this.arrayCache = this.IMAGES_HEALTH;
-        }else if (array == "bottle"){
-            this.arrayCache = this.IMAGES_BOTTLE;
-        }else if (array == "boss"){
-            this.arrayCache = this.IMAGES_BOSS;
-        }
-        this.persentage = persentage;
-        this.x = x;
-        this.y = y;
+        this.setTypeProperties(array);
+        this.setPosition(y, x);
         this.loadImages(this.arrayCache);
-        this.setPercentage(this.persentage);
+        this.setPercentage(persentage);
     }
 
     setPercentage(persentage){
         this.persentage = persentage;
         let path = this.arrayCache[this.resolveImageIndex()];
         this.img = this.imageCache[path];
+    }
+
+    setPosition(y, x){
+        this.x = x;
+        this.y = y;
     }
 
     resolveImageIndex() {
@@ -78,6 +73,18 @@ class StatusBar extends DrawableObject{
             return 1;
         }else{
             return 0;
+        }
+    }
+
+    setTypeProperties(array){
+        if(array == "coin"){
+            this.arrayCache = this.IMAGES_COIN;
+        }else if (array == "health" ){
+            this.arrayCache = this.IMAGES_HEALTH;
+        }else if (array == "bottle"){
+            this.arrayCache = this.IMAGES_BOTTLE;
+        }else if (array == "boss"){
+            this.arrayCache = this.IMAGES_BOSS;
         }
     }
 }
