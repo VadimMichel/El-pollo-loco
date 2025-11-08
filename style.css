@@ -101,6 +101,7 @@ canvas{
 
 h1{
   margin-bottom: 40px;
+  text-align: center;
 }
   
 .western-button:hover {
@@ -172,7 +173,7 @@ h1{
   font-size: 2em;
   text-align: center;
   padding-top: 40vh;
-  z-index: 9999;
+  z-index: 7;
 }
 
 .d-flex{
@@ -182,6 +183,20 @@ h1{
 
 @media (min-width: 720px) {
   .fullscreen-hide{
+    display: none;
+  }
+}
+
+@media (max-width: 720px) and (min-height: 480px) {
+  #rotateOverlay {
+    display: block;
+  }
+
+  .game-contant{
+    display: none;
+  }
+
+  #gamepadContent{
     display: none;
   }
 }
@@ -205,10 +220,6 @@ h1{
 
   .win-lose-content{
     width: 100%;
-  }
-
-  #rotateOverlay{
-    display: block;
   }
 
   .key-info{
@@ -253,10 +264,6 @@ h1{
 
   .fullscreen-hide{
     display: flex;
-  }
-
-  #rotateOverlay {
-    display: block;
   }
 }
 
