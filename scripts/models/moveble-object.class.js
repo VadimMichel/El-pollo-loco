@@ -22,7 +22,6 @@ class MovableObject extends DrawableObject{
 
     gravitySettings(){
         if((this.limitationYGround() || this.speedY > 0) && !this.collided){
-            console.log(this.speedY);
             this.y -= this.speedY;
             this.speedY -= this.acceleration;
         }
@@ -45,19 +44,31 @@ class MovableObject extends DrawableObject{
         this.x -= this.speed;
     }
 
-    animateImage(IMAGES_ARRAY){
-        if(IMAGES_ARRAY == this.IMAGES_ATTACK || IMAGES_ARRAY == this.IMAGES_IDLE||IMAGES_ARRAY == this.ImageCacheWalking || IMAGES_ARRAY == this.IMAGES_WALKING || IMAGES_ARRAY == this.IMAGES_HURT || IMAGES_ARRAY == this.IMAGES_LONG_IDLE || IMAGES_ARRAY == this.IMAGES_Coin || IMAGES_ARRAY == this.IMAGES_BOTTLE_ROTATION){
-            this.currentImage ++;
-            this.i = this.currentImage % IMAGES_ARRAY.length;
-            this.path = IMAGES_ARRAY[this.i];
-        }else{
-            if (this.j < IMAGES_ARRAY.length-1) {
-                this.j++;
-                this.path = IMAGES_ARRAY[this.j];
-            }
-        } 
-        
+    animateImage(IMAGES_ARRAY) {
+        let index = this.getNextImageIndex(IMAGES_ARRAY);
+        this.path = IMAGES_ARRAY[index];
         this.img = this.imageCache[this.path];
+    }
+
+    getNextImageIndex(array) {
+        let loopingArrays = [
+            this.IMAGES_ATTACK,
+            this.IMAGES_IDLE,
+            this.ImageCacheWalking,
+            this.IMAGES_WALKING,
+            this.IMAGES_HURT,
+            this.IMAGES_LONG_IDLE,
+            this.IMAGES_Coin,
+            this.IMAGES_BOTTLE_ROTATION
+        ];
+
+        if (loopingArrays.includes(array)) {
+            this.currentImage++;
+            return this.currentImage % array.length;
+        } else {
+            if (this.j < array.length - 1) this.j++;
+            return this.j;
+        }
     }
 
     getHit(){
