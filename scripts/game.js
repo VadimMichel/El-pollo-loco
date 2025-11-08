@@ -20,16 +20,11 @@ function getFromLocalStorage() {
 }
 
 function startGameBotton(){
-    wrapperRef = document.getElementById("contentWrapper")
-    wrapperRef.innerHTML = ""
-    wrapperRef.innerHTML = `<canvas id="content" width="720" height="480"></canvas>`
-    canvas = document.getElementById("content");
+    initializeCanvas()
     initLevel();
     world = new World(canvas, keyboard);
-    document.getElementById("topBtnContent").classList.remove("d-none");
-    document.getElementById("winLoseContent").classList.add("d-none");
-    world.playedSound = false;
-    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.1, true);
+    showGameUI();
+    playBackgroundMusic()
 }
 
 function stopGame(){
@@ -49,6 +44,23 @@ function restartGame(){
 function displayGamePad(){
     gamepad = document.getElementById("gamepadContent");
     gamepad.classList.toggle("fullscreen-hide");
+}
+
+function initializeCanvas(){
+    wrapperRef = document.getElementById("contentWrapper")
+    wrapperRef.innerHTML = ""
+    wrapperRef.innerHTML = `<canvas id="content" width="720" height="480"></canvas>`
+    canvas = document.getElementById("content");
+}
+
+function showGameUI(){
+    document.getElementById("topBtnContent").classList.remove("d-none");
+    document.getElementById("winLoseContent").classList.add("d-none");
+}
+
+function playBackgroundMusic(){
+    world.playedSound = false;
+    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.1, true);
 }
 
 window.addEventListener("keydown", (event) => {
