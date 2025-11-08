@@ -24,27 +24,33 @@ class CollectableObject extends MovableObject{
 
     constructor(array, y){
         super();
-        if(array == "coin"){
-            this.arrayCache = this.IMAGES_Coin;
-            this.animate();
-            this.offset.top = 35;
-            this.offset.left = 35;
-            this.offset.right = 35;
-            this.offset.bottom = 35;
-        }else if (array == "bottle"){
-            this.arrayCache = this.IMAGES_BOTTTLE;
-            this.offset.top = 20;
-            this.offset.left = 35;
-            this.offset.right = 25;
-            this.offset.bottom = 15;
-        }
-        this.y = y;
-        this.loadImage(this.arrayCache[this.randomZerroOrOne()]);
-        this.loadImages(this.arrayCache);
-        this.x = 300 + Math.random() * 1700;
+        this.setTypeProperties(array);
+        this.loadImagesForType();
+        this.setPosition(y);
     }
 
     animate(){
         setStoppableInterval(() => this.animateImage(this.arrayCache), 300);
+    }
+
+    setTypeProperties(array){
+        if(array == "coin"){
+            this.arrayCache = this.IMAGES_Coin;
+            this.animate();
+            this.offset = { top: 35, left: 35, right: 35, bottom: 35 };
+        }else if (array == "bottle"){
+            this.arrayCache = this.IMAGES_BOTTTLE;
+           this.offset = { top: 20, left: 35, right: 25, bottom: 15 };
+        }
+    }
+
+    setPosition(y){
+        this.y = y;
+        this.x = 300 + Math.random() * 1700;
+    }
+
+    loadImagesForType() {
+        this.loadImage(this.arrayCache[this.randomZerroOrOne()]);
+        this.loadImages(this.arrayCache);
     }
 }
