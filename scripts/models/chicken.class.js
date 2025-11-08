@@ -40,25 +40,11 @@ class Chicken extends MovableObject{
 
     constructor (){
         super()
-        this.loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
-        if(this.randomZerroOrOne() == 1){
-            this.ImageCacheDead = this.IMAGES_DEAD_NORMAL;
-            this.ImageCacheWalking = this.IMAGES_WALKING_NORMAL;
-        }else{
-            this.ImageCacheDead = this.IMAGES_DEAD_SMAL;
-            this.ImageCacheWalking = this.IMAGES_WALKING_SMAL;
-            this.width = 60;
-            this.height = 50;
-            this.y = 380;
-        }
-        this.loadImages(this.ImageCacheDead);
-        this.loadImages(this.ImageCacheWalking);
-        this.x = 300 + Math.random() * 1700;
-        this.speed = 0.05 + Math.random() * 2;
+        this.setVariant();
+        this.loadAllImages();
+        this.setPositionAndSpeed();
         this.animate();
     }
-
-    
 
     animate(){
         setStoppableInterval(() => this.moveLeftIfNotDead(), 1000/60);
@@ -79,5 +65,29 @@ class Chicken extends MovableObject{
         }else{
             this.animateImage(this.ImageCacheWalking);
         }
+    }
+
+    setVariant(){
+        if (this.randomZerroOrOne() === 1) {
+            this.ImageCacheDead = this.IMAGES_DEAD_NORMAL;
+            this.ImageCacheWalking = this.IMAGES_WALKING_NORMAL;
+        } else {
+            this.ImageCacheDead = this.IMAGES_DEAD_SMAL;
+            this.ImageCacheWalking = this.IMAGES_WALKING_SMAL;
+            this.width = 60;
+            this.height = 50;
+            this.y = 380;
+        }
+    }
+
+    setPositionAndSpeed(){
+        this.x = 300 + Math.random() * 1700;
+        this.speed = 0.05 + Math.random() * 2;
+    }
+
+    loadAllImages(){
+        this.loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
+        this.loadImages(this.ImageCacheDead);
+        this.loadImages(this.ImageCacheWalking);
     }
 }
