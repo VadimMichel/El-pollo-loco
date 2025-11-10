@@ -53,6 +53,7 @@ function initializeCanvas(){
 
 function showGameUI(){
     document.getElementById("topBtnContent").classList.remove("d-none");
+    document.getElementById("gamepadContent").classList.remove("d-none");
     document.getElementById("winLoseContent").classList.add("d-none");
 }
 
