@@ -24,22 +24,16 @@ class GameSounds{
         GameSounds.WIN
     ]
 
-    static muteGame(id){
-        GameSounds.allSounds.forEach(sound => {
-            sound.pause();
-        });
-        GameSounds.mute = true;
-        localStorage.setItem("soundMute", JSON.stringify(true));
-        document.getElementById(`muteButton${id}`).classList.toggle("d-none");
-        document.getElementById(`unMuteButton${id}`).classList.toggle("d-none");
+    static muteGame(id) {
+        GameSounds.stopAllSounds();
+        GameSounds.setMuteState(true);
+        GameSounds.updateMuteUI(id);
     }
 
     static unMuteGame(id){
-        GameSounds.mute = false;
-        localStorage.setItem("soundMute", JSON.stringify(false));
+        GameSounds.setMuteState(false);
         GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
-        document.getElementById(`muteButton${id}`).classList.toggle("d-none");
-        document.getElementById(`unMuteButton${id}`).classList.toggle("d-none");
+        GameSounds.updateMuteUI(id);
     }
         
     static playAudio(audio, volume, loop){
@@ -51,5 +45,19 @@ class GameSounds{
                 clearInterval(intervalSound);
             } 
         }, 200)
+    }
+
+    static stopAllSounds(){
+        GameSounds.allSounds.forEach(sound => sound.pause());
+    }
+
+    static setMuteState(isMuted){
+        GameSounds.mute = isMuted;
+        localStorage.setItem("soundMute", JSON.stringify(isMuted));
+    }
+
+    static updateMuteUI(id){
+        document.getElementById(`muteButton${id}`).classList.toggle("d-none");
+        document.getElementById(`unMuteButton${id}`).classList.toggle("d-none");
     }
 }
