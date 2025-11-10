@@ -79,18 +79,9 @@ class World{
 
     gameOver(){
         if(this.character.isDead() && !this.playedSound){
-            GameSounds.BACKGROUND_MUSIK.pause();
-            GameSounds.playAudio(GameSounds.LOSE, 0.2, false);
-            setStoppableInterval(() => stopGame(), 2000);
-            document.getElementById("winLoseContent").classList.remove("d-none");
-            this.playedSound = true;
+            this.selectGameEnd("lose", "./img/You won, you lost/Game over A.png", GameSounds.LOSE);
         }else if(this.level.enemies[3].isDead() && !this.playedSound){
-            GameSounds.BACKGROUND_MUSIK.pause();
-            GameSounds.playAudio(GameSounds.WIN, 0.2, false);
-            setStoppableInterval(() => stopGame(), 2000);
-            document.getElementById("winLoseContent").classList.remove("d-none");
-            document.getElementById("winLoseContentImg").innerHTML = '<img src="./img/You won, you lost/You Win A.png" alt="">'
-            this.playedSound = true;
+            this.selectGameEnd("win", "./img/You won, you lost/You Win A.png", GameSounds.WIN);
         }
     }
 
@@ -165,6 +156,24 @@ class World{
     flipImageBack(mo){
         mo.x = mo.x * -1;
         this.ctx.restore(); 
+    }
+
+    selectGameEnd(type, imagePath, sound){
+        GameSounds.BACKGROUND_MUSIK.pause();
+        GameSounds.playAudio(sound, 0.2, false);
+        this.showWinScreen(imagePath, type);
+        this.playedSound = true;
+        setStoppableInterval(() => stopGame(), 2000);
+    }
+
+    showWinScreen(imagePath, type) {
+        let overlay = document.getElementById("winLoseContent");
+        let imageContainer = document.getElementById("winLoseContentImg");
+
+        overlay.classList.remove("d-none");
+        if(type === "win"){
+            imageContainer.innerHTML = `<img src="${imagePath}" alt="win screen">`;
+        }
     }
 
     bottleBreak(j, object, immageArrayLength, array){
