@@ -26,11 +26,9 @@ class ThrowableObject extends MovableObject{
 
     constructor(x, y){
         super().loadImage(this.IMAGES_BOTTLE_ROTATION[0]);
-        this.loadImages(this.IMAGES_BOTTLE_ROTATION);
-        this.loadImages(this.IMAGES_BOTTLE_SPLASH);
+        this.loadAllImages();
         this.animate();
-        this.x = x;
-        this.y = y;
+        this.setPosition(x, y);
         this.trow();
     }
 
@@ -55,5 +53,15 @@ class ThrowableObject extends MovableObject{
         }else{
             this.animateImage(this.IMAGES_BOTTLE_ROTATION);
         }
+    }
+
+    loadAllImages(){
+        this.loadImages(this.IMAGES_BOTTLE_ROTATION);
+        this.loadImages(this.IMAGES_BOTTLE_SPLASH);
+    }
+
+    setPosition(x, y){
+        this.x = x;
+        this.y = y;
     }
 }
