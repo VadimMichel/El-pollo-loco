@@ -41,21 +41,26 @@ class World{
                 this.collectCoin(i);
             }else if (this.doesCharactertouchBottle(object, array)){
                 this.characterCollectBottle(i);
+            }else{
+                this.bottleHitBoss(array, object);
             }
-            this.bottleThrow.forEach((throwObj, j) => {
-                if (this.doesBottleHitEnemy(object, array, throwObj)) {
-                    GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
-                    object.getHit();
-                    this.bottleBreak(j, throwObj, 5, this.bottleThrow);
-                    if(this.isTheObjectABoss(object)){
-                        this.changeBossHealthBarAmount();
-                        object.speed += 0.3;
-                    }
-                }else if(this.bottleThrow[j].y > 300){
-                    this.bottleBreak(j, throwObj, 5, this.bottleThrow);
-                }
-            });
         })
+    }
+
+    bottleHitBoss(array, object){
+        this.bottleThrow.forEach((throwObj, j) => {
+            if (this.doesBottleHitEnemy(object, array, throwObj)) {
+                GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
+                object.getHit();
+                this.bottleBreak(j, throwObj, 5, this.bottleThrow);
+                if(this.isTheObjectABoss(object)){
+                    this.changeBossHealthBarAmount();
+                    object.speed += 0.3;
+                }
+            }else if(this.bottleThrow[j].y > 300){
+                this.bottleBreak(j, throwObj, 5, this.bottleThrow);
+            }
+        });
     }
 
     run(){
@@ -93,7 +98,6 @@ class World{
 
     checkThrow(){
         if(this.dPressedAndSomeBottleLeft() && this.bossFightNotStartet() || this.bossStartAnimationIsOver() && this.dPressedAndSomeBottleLeft()){
-            console.log("bottle")
             let bottleThrow = new ThrowableObject(this.character.x + 70, this.character.y + 100);
             this.bottleThrow.push(bottleThrow);
             this.bottleAmount -= 20;
@@ -102,8 +106,18 @@ class World{
         }
     }
 
-    draw() {
+   draw() {
+    this.clearCanvas();
+    this.drawGameWorld();
+    this.drawUI();
+    this.scheduleNextFrame();
+    }
+
+    clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    drawGameWorld() {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.enemies);
@@ -113,20 +127,23 @@ class World{
         this.addObjectsToMap(this.bottleThrow);
         this.addObjectsToMap(this.level.clouds);
         this.ctx.translate(-this.camera_x, 0);
+    }
+
+    drawUI() {
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
-        if(this.level.enemies[3].startBossFight){
+        if (this.level.enemies[3].startBossFight) {
             this.addToMap(this.bossHealthBar);
         }
-        this.ctx.translate(this.camera_x, 0);
-        this.ctx.translate(-this.camera_x, 0);
+    }
 
+    scheduleNextFrame() {
         let self = this;
-        requestAnimationFrame(function ()   {
+        requestAnimationFrame(function () {
             self.draw();
         });
-    } 
+    }
 
     addObjectsToMap(objectArray){
         objectArray.forEach(object => {
