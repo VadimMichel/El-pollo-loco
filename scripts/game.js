@@ -7,11 +7,9 @@ let startGame = false;
 function getFromLocalStorage() {
     let isSoundMuted = JSON.parse(localStorage.getItem("soundMute"));
     const id = '';
-
     if (isSoundMuted === null) {
         isSoundMuted = false;
     }
-
     if (isSoundMuted) {
         GameSounds.muteGame(id);
     } else {

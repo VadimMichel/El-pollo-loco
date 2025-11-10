@@ -73,7 +73,7 @@ class MovableObject extends DrawableObject{
 
     getHit(){
         if(!this.isHurt()){
-        this.energy -= this.recievedDamage;
+            this.energy -= this.recievedDamage;
         if(this.energy <= 0){
             this.energy = 0;
         }else{
@@ -109,12 +109,5 @@ class MovableObject extends DrawableObject{
             this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right
         ;
-    }
-
-    playAudio(url, volume, loop){
-        let audio = new Audio(url);
-        audio.volume = volume;
-        audio.loop = loop;
-        audio.play();
     }
 }
