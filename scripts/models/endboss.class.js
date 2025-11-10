@@ -55,14 +55,9 @@ class Endboss extends MovableObject{
     ];
 
     constructor(){
-        super()
-        this.loadImage(this.IMAGES_WALKING[0]);
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_DEAD);
-        this.loadImages(this.IMAGES_ALERT);
-        this.loadImages(this.IMAGES_ATTACK);
-        this.x = 2800;
+        super();
+        this.loadAllImages();
+        this.setPosition();
         this.animate();
     }
 
@@ -79,18 +74,62 @@ class Endboss extends MovableObject{
 
     animateEndboss(){
         if(this.isDead()){
-            this.animateImage(this.IMAGES_DEAD);
+            this.animateDead();
         }else if(this.isHurt()){
-            this.animateImage(this.IMAGES_HURT);
-        }else if(this.startBossFight && this.x > 2500){
-            this.animateImage(this.IMAGES_WALKING);
-        }else if (this.startBossFight && this.x > 2490 && this.startAnimation < this.IMAGES_ALERT.length +1){
-            this.animateImage(this.IMAGES_ALERT);
-            this.startAnimation++
-            console.log(this.startAnimation)
-        }else if (this.startAnimation >= this.IMAGES_WALKING.length +1){
-            this.j = 0;
-            this.animateImage(this.IMAGES_ATTACK);
+            this.animateHurt();
+        }else if(this.shouldWalk()){
+            this.animateWalking();
+        }else if (this.shouldAlert()){
+            this.animateAlert();
+        }else if (this.shouldAttack()){
+            this.animateAttack();
         }  
+    }
+
+    shouldAlert(){
+        return this.startBossFight && this.x > 2490 && this.startAnimation < this.IMAGES_ALERT.length +1;
+    }
+
+    shouldWalk(){
+        return this.startBossFight && this.x > 2500;
+    }
+
+    shouldAttack(){
+        return this.startAnimation >= this.IMAGES_WALKING.length +1;
+    }
+
+    animateAttack(){
+        this.j = 0;
+        this.animateImage(this.IMAGES_ATTACK);
+    }
+
+    animateWalking(){
+        this.animateImage(this.IMAGES_WALKING);
+    }
+
+    animateAlert(){
+        this.animateImage(this.IMAGES_ALERT);
+        this.startAnimation++
+    }
+
+    animateHurt(){
+        this.animateImage(this.IMAGES_HURT);
+    }
+
+    animateDead(){
+        this.animateImage(this.IMAGES_DEAD);
+    }
+
+    loadAllImages(){
+        this.loadImage(this.IMAGES_WALKING[0]);
+        this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_ALERT);
+        this.loadImages(this.IMAGES_ATTACK);
+    }
+
+    setPosition(){
+        this.x = 2800;
     }
 }
