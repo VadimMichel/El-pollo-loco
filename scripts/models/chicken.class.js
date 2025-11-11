@@ -10,7 +10,7 @@ class Chicken extends MovableObject{
     ImageCacheDead;
     ImageCacheWalking;
      offset = {
-        top: 15,
+        top: 30,
         left: 10,
         right: 10,
         bottom: 15
@@ -39,7 +39,7 @@ class Chicken extends MovableObject{
     ]
 
     constructor (){
-        super()
+        super();
         this.setVariant();
         this.loadAllImages();
         this.setPositionAndSpeed();
@@ -77,6 +77,7 @@ class Chicken extends MovableObject{
             this.width = 60;
             this.height = 50;
             this.y = 380;
+            this.offset = {top: 0, left: 10, right: 10, bottom: 15};
         }
     }
 
