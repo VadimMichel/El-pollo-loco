@@ -55,7 +55,7 @@ class World{
                 this.bottleBreak(j, throwObj, 5, this.bottleThrow);
                 if(this.isTheObjectABoss(object)){
                     this.changeBossHealthBarAmount();
-                    object.speed += 0.3;
+                    object.speed += 0.2;
                 }
             }else if(this.bottleThrow[j].y > 350){
                 this.bottleBreak(j, throwObj, 5, this.bottleThrow);
