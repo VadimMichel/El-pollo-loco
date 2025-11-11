@@ -2,7 +2,7 @@ class ThrowableObject extends MovableObject{
     width = 120;
     height = 100;
     acceleration = 2;
-    speed = 30;
+    speed = 20;
     x = 50;
     y = 50;
     k = 0;
@@ -47,13 +47,20 @@ class ThrowableObject extends MovableObject{
     }
 
     animateBottle(){
-        if(this.collided){
-            this.animateImage(this.IMAGES_BOTTLE_SPLASH);
-            this.k++
-        }else{
-            this.animateImage(this.IMAGES_BOTTLE_ROTATION);
+    if(this.collided){
+        this.animateImage(this.IMAGES_BOTTLE_SPLASH);
+        this.k++;
+
+        if (this.k > this.IMAGES_BOTTLE_SPLASH.length) {
+            const index = world.bottleThrow.indexOf(this); 
+        if (index !== -1) {                            
+            world.bottleThrow.splice(index, 1);        
         }
+        }
+    } else {
+        this.animateImage(this.IMAGES_BOTTLE_ROTATION);
     }
+}
 
     loadAllImages(){
         this.loadImages(this.IMAGES_BOTTLE_ROTATION);

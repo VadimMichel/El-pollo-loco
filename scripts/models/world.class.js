@@ -42,12 +42,12 @@ class World{
             }else if (this.doesCharactertouchBottle(object, array)){
                 this.characterCollectBottle(i);
             }else{
-                this.bottleHitBoss(array, object);
+                this.bottleHitObject(array, object);
             }
         })
     }
 
-    bottleHitBoss(array, object){
+    bottleHitObject(array, object){
         this.bottleThrow.forEach((throwObj, j) => {
             if (this.doesBottleHitEnemy(object, array, throwObj)) {
                 GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
@@ -57,7 +57,7 @@ class World{
                     this.changeBossHealthBarAmount();
                     object.speed += 0.3;
                 }
-            }else if(this.bottleThrow[j].y > 300){
+            }else if(this.bottleThrow[j].y > 350){
                 this.bottleBreak(j, throwObj, 5, this.bottleThrow);
             }
         });
@@ -90,12 +90,6 @@ class World{
         }
     }
 
-    deleteImage(i, object, immageArrayLength, array){
-        if(object.k > immageArrayLength){
-            array.splice(i, 1) 
-       }
-    }
-
     checkThrow(){
         if(this.dPressedAndSomeBottleLeft() && this.bossFightNotStartet() || this.bossStartAnimationIsOver() && this.dPressedAndSomeBottleLeft()){
             let bottleThrow = new ThrowableObject(this.character.x + 70, this.character.y + 100);
@@ -107,10 +101,10 @@ class World{
     }
 
    draw() {
-    this.clearCanvas();
-    this.drawGameWorld();
-    this.drawUI();
-    this.scheduleNextFrame();
+        this.clearCanvas();
+        this.drawGameWorld();
+        this.drawUI();
+        this.scheduleNextFrame();
     }
 
     clearCanvas() {
@@ -198,7 +192,6 @@ class World{
             GameSounds.playAudio(GameSounds.GLASS_SHATTER, 0.1, false);
         }
         object.collided = true;
-        this.deleteImage(j, object, immageArrayLength, array); 
     }
 
     isCharacterHitByEnemy(object, array){
@@ -217,7 +210,6 @@ class World{
     characterJumpOnEnemy(i, object){
         GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
         object.getHit();
-        this.deleteImage(i, object, 0, this.level.enemies);
         this.character.jump();
     }
 
@@ -248,7 +240,7 @@ class World{
     }
 
     doesBottleHitEnemy(object, array, throwObj){
-        return throwObj.isCollading(object) && array == this.level.enemies;
+        return throwObj.isCollading(object) && array == this.level.enemies && !object.isDead();
     }
 
     isTheObjectABoss(object){

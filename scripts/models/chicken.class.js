@@ -61,7 +61,6 @@ class Chicken extends MovableObject{
         if(this.isDead()){
             this.k++;
             this.animateImage(this.ImageCacheDead); 
-            
         }else{
             this.animateImage(this.ImageCacheWalking);
         }
