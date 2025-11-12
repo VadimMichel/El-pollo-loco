@@ -83,6 +83,9 @@ function initLevel(){
             new CollectableObject("bottle", 330),
             new CollectableObject("bottle", 330),
             new CollectableObject("bottle", 330),
+            new CollectableObject("bottle", 330),
+            new CollectableObject("bottle", 330),
+            new CollectableObject("bottle", 330),
             new CollectableObject("bottle", 330)
         ]
     );

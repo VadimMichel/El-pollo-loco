@@ -37,7 +37,11 @@ class ThrowableObject extends MovableObject{
         this.applyGravity();
             setInterval(() => {
                 if(!this.collided){
-                    this.moveRight(this.speed);
+                    if(world.character.otherDirection){
+                        this.moveLeft(this.speed);
+                    } else if(!world.character.otherDirection){ 
+                        this.moveRight(this.speed);
+                    }
                 }
             }, 1000 / 25);
     }
@@ -68,7 +72,11 @@ class ThrowableObject extends MovableObject{
     }
 
     setPosition(x, y){
-        this.x = x;
+        if (world.character.otherDirection) {
+            this.x = x - 100;
+        } else {
+            this.x = x;
+        }
         this.y = y;
     }
 }

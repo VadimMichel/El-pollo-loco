@@ -52,13 +52,13 @@ class World{
             if (this.doesBottleHitEnemy(object, array, throwObj)) {
                 GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
                 object.getHit();
-                this.bottleBreak(j, throwObj, 5, this.bottleThrow);
+                this.bottleBreak(j, throwObj);
                 if(this.isTheObjectABoss(object)){
                     this.changeBossHealthBarAmount();
                     object.speed += 0.2;
                 }
             }else if(this.bottleThrow[j].y > 350){
-                this.bottleBreak(j, throwObj, 5, this.bottleThrow);
+                this.bottleBreak(j, throwObj);
             }
         });
     }
@@ -187,7 +187,7 @@ class World{
         }
     }
 
-    bottleBreak(j, object, immageArrayLength, array){
+    bottleBreak(j, object){
         if(!this.bottleThrow[j].collided){
             GameSounds.playAudio(GameSounds.GLASS_SHATTER, 0.1, false);
         }
@@ -229,7 +229,7 @@ class World{
     }
 
     doesCharactertouchBottle(object, array){
-        return this.character.isCollading(object) && array == this.level.bottle
+        return this.character.isCollading(object) && array == this.level.bottle && this.bottleAmount < 100;
     }
 
     characterCollectBottle(i){
