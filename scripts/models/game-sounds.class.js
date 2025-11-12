@@ -27,13 +27,13 @@ class GameSounds{
     static muteGame(id) {
         GameSounds.stopAllSounds();
         GameSounds.setMuteState(true);
-        GameSounds.updateMuteUI(id);
+        GameSounds.updateMuteUI(id, 'muted');
     }
 
     static unMuteGame(id){
         GameSounds.setMuteState(false);
         GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
-        GameSounds.updateMuteUI(id);
+        GameSounds.updateMuteUI(id, 'unmuted');
     }
         
     static playAudio(audio, volume, loop){
@@ -56,8 +56,9 @@ class GameSounds{
         localStorage.setItem("soundMute", JSON.stringify(isMuted));
     }
 
-    static updateMuteUI(id){
-        document.getElementById(`muteButton${id}`).classList.toggle("d-none");
-        document.getElementById(`unMuteButton${id}`).classList.toggle("d-none");
+    static updateMuteUI(id, muteState) {
+        const isMuted = muteState === 'muted';
+        document.getElementById(`muteButton${id}`).classList.toggle("d-none", isMuted);
+        document.getElementById(`unMuteButton${id}`).classList.toggle("d-none", !isMuted);
     }
 }

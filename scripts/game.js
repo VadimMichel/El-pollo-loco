@@ -27,7 +27,7 @@ function getFromLocalStorage() {
     }
     if (isSoundMuted) {
         GameSounds.muteGame(id);
-    } else {
+    } else if (!isSoundMuted){
         GameSounds.unMuteGame(id);
     }
 }
@@ -38,16 +38,15 @@ function getFromLocalStorage() {
  * Side effects:
  * - Replaces the content wrapper with a new canvas element.
  * - Creates a new World instance assigned to the global `world`.
- * - Triggers background music playback.
  *
  * @returns {void}
  */
 function startGameBotton(){
+    getFromLocalStorage();
     initializeCanvas();
     initLevel();
     world = new World(canvas, keyboard);
     showGameUI();
-    playBackgroundMusic();
 }
 
 /**
@@ -114,18 +113,6 @@ function showGameUI(){
     document.getElementById("topBtnContent").classList.remove("d-none");
     document.getElementById("gamepadContent").classList.remove("d-none");
     document.getElementById("winLoseContent").classList.add("d-none");
-}
-
-/**
- * Start or resume background music for the current world.
- *
- * Sets `world.playedSound` to false and plays the background audio at low volume looping.
- *
- * @returns {void}
- */
-function playBackgroundMusic(){
-    world.playedSound = false;
-    GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.1, true);
 }
 
 window.addEventListener("keydown", (event) => {
