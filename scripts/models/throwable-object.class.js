@@ -32,18 +32,20 @@ class ThrowableObject extends MovableObject{
         this.trow();
     }
 
-    trow(){
+   trow() {
         this.speedY = 15;
         this.applyGravity();
-            setInterval(() => {
-                if(!this.collided){
-                    if(world.character.otherDirection){
-                        this.moveLeft(this.speed);
-                    } else if(!world.character.otherDirection){ 
-                        this.moveRight(this.speed);
-                    }
+        const throwToLeft = world.character.otherDirection;
+        setInterval(() => {
+            if (!this.collided) {
+                if (throwToLeft) {
+                    this.moveLeft(this.speed);
+                } else {
+                    this.moveRight(this.speed);
                 }
-            }, 1000 / 25);
+            }
+        }, 1000 / 25);
+    
     }
 
     animate(){
