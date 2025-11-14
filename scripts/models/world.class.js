@@ -1,22 +1,24 @@
 /**
- * @fileoverview World manages the game state for a single play session:
- * - contains the main character, current level and UI status bars
- * - runs the main game loop (drawing, updating, collision checks)
- * - handles throwables, boss start logic and end-of-game handling
+ * @fileoverview World manages rendering and global game state for a single play session.
  *
- * The World instance is responsible for coordinating interactions between
- * game objects and for rendering the whole scene onto the provided canvas.
+ * Responsibilities:
+ * - Hold references to main game objects (character, level, UI bars, thrown bottles)
+ * - Render the scene and HUD each animation frame
+ * - Provide helpers for drawing, mirroring sprites and showing end-of-game UI
+ *
+ * Note: Gameplay logic (events, collisions, throw handling, etc.) is implemented
+ * in WorldLogic which this class extends. Ensure WorldLogic is loaded before this file.
  *
  * @class World
  */
-class World{
-    /** @type {Character} The player character instance. */
+class World extends WorldLogic {
+    /** @type {Character} Player character instance. */
     character = new Character();
 
     /** @type {Level} Current level definition (enemies, background, collectables). */
     level = level1;
 
-    /** @type {HTMLCanvasElement} Canvas element used for rendering. */
+    /** @type {HTMLCanvasElement} Canvas used for rendering. */
     canvas;
 
     /** @type {CanvasRenderingContext2D} 2D drawing context of the canvas. */
@@ -25,13 +27,13 @@ class World{
     /** @type {Keyboard} Keyboard input state wrapper. */
     keyboard;
 
-    /** @type {number} Camera offset on the x axis (applied via ctx.translate). */
+    /** @type {number} Camera offset on the x axis applied when rendering. */
     camera_x = 0;
 
-    /** @type {number} Current collected coin percentage (0-100). */
+    /** @type {number} Collected coin amount (0-100). */
     coinAmount = 0;
 
-    /** @type {number} Current bottle amount percentage (0-100). */
+    /** @type {number} Current bottle amount (0-100). */
     bottleAmount = 0;
 
     /** @type {number} Boss health percentage (0-100). */
@@ -49,29 +51,30 @@ class World{
     /** @type {StatusBar} Boss health bar UI. */
     bossHealthBar = new StatusBar("boss", 6, 440, 100);
 
-    /** @type {ThrowableObject[]} Array of active thrown bottles. */
+    /** @type {ThrowableObject[]} Active thrown bottles in the world. */
     bottleThrow = [];
 
-    /** @type {boolean} Flag to prevent repeated end-of-game sound triggers. */
+    /** @type {boolean} Prevent repeated end-of-game sound/sequence triggers. */
     playedSound = false;
 
     /**
-     * Create the World instance and start the main loops.
+     * Construct a World instance, initialize rendering context and start loops.
      *
-     * @param {HTMLCanvasElement} canvas - Canvas used for rendering.
-     * @param {Keyboard} keyboard - Shared input state instance.
+     * @param {HTMLCanvasElement} canvas - Canvas element used for rendering.
+     * @param {Keyboard} keyboard - Shared keyboard input state object.
      */
     constructor(canvas, keyboard){
+        super(); // initialize WorldLogic parent
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
-        this.run();
+        this.run(); // run() is provided by WorldLogic via inheritance
     }
 
     /**
-     * Wire the world reference into the character so components can access the world.
+     * Attach this world reference to the character so game objects can access it.
      *
      * @returns {void}
      */
@@ -80,118 +83,7 @@ class World{
     }
 
     /**
-     * Check collisions and interactions between the provided array of objects
-     * and the player/throwables. This method orchestrates hit / collect behaviors.
-     *
-     * @param {Array<MovableObject>} array - Array to check (enemies, coins, bottles).
-     * @returns {void}
-     */
-    checkCollisions(array){
-        array.forEach((object, i) => {
-            if (this.isCharacterHitByEnemy(object, array)){
-                if(this.isTheObjectABoss(object)){
-                    this.character.recievedDamage = 100;
-                }
-                this.characterisHitByEnemy();  
-            }else if(this.doesCharacterJumpOnEnemy(object, array)){
-                this.characterJumpOnEnemy(i, object);
-            }else if (this.isCollectingCoin(object, array)){
-                this.collectCoin(i);
-            }else if (this.doesCharactertouchBottle(object, array)){
-                this.characterCollectBottle(i);
-            }else{
-                this.bottleHitObject(array, object);
-            }
-        })
-    }
-
-    /**
-     * Evaluate whether any thrown bottles hit the given object and handle bottle lifecycle.
-     *
-     * @param {Array<MovableObject>} array - The array currently being checked (used to identify enemies).
-     * @param {MovableObject} object - The target object from the array.
-     * @returns {void}
-     */
-    bottleHitObject(array, object){
-        this.bottleThrow.forEach((throwObj, j) => {
-            if (this.doesBottleHitEnemy(object, array, throwObj)) {
-                GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
-                object.getHit();
-                this.bottleBreak(j, throwObj);
-                if(this.isTheObjectABoss(object)){
-                    this.changeBossHealthBarAmount();
-                    object.speed += 0.2;
-                }
-            }else if(this.bottleThrow[j].y > 350){
-                this.bottleBreak(j, throwObj);
-            }
-        });
-    }
-
-    /**
-     * Start recurring non-render update loop (events) using a stoppable interval.
-     *
-     * @returns {void}
-     */
-    run(){
-        setStoppableInterval(() => this.events(), 10);
-    }
-
-    /**
-     * Periodic game update: collision checks, throw handling, boss start and game over detection.
-     *
-     * @returns {void}
-     */
-    events(){
-        this.checkCollisions(this.level.enemies); 
-        this.checkCollisions(this.level.coins);
-        this.checkCollisions(this.level.bottle);
-        this.checkThrow();
-        this.startBossFight();
-        this.gameOver();
-    }
-
-    /**
-     * Trigger boss fight flag when character passes the threshold.
-     *
-     * @returns {void}
-     */
-    startBossFight(){
-        if(this.character.x > 2150){
-            this.level.enemies[3].startBossFight = true;
-        }
-    }
-
-    /**
-     * Detect end-of-game conditions (player dead or boss dead) and trigger end sequence once.
-     *
-     * @returns {void}
-     */
-    gameOver(){
-        if(this.character.isDead() && !this.playedSound){
-            this.selectGameEnd("lose", "./img/You won, you lost/Game over A.png", GameSounds.LOSE);
-        }else if(this.level.enemies[3].isDead() && !this.playedSound){
-            this.selectGameEnd("win", "./img/You won, you lost/You Win A.png", GameSounds.WIN);
-        }
-    }
-
-    /**
-     * Handle throw input: create a new ThrowableObject when allowed and update bottle UI.
-     *
-     * @returns {void}
-     */
-    checkThrow(){
-        if(this.dPressedAndSomeBottleLeft() && this.bossFightNotStartet() || this.bossStartAnimationIsOver() && this.dPressedAndSomeBottleLeft()){
-            let bottleThrow = new ThrowableObject(this.character.x + 70, this.character.y + 100);
-            this.bottleThrow.push(bottleThrow);
-            this.bottleAmount -= 20;
-            this.bottleBar.setPercentage(this.bottleAmount)
-            this.bottleThrow.lastHit = new Date().getTime()
-        }
-    }
-
-    /**
-     * Main render entry: clear canvas, draw world and UI, and schedule next frame.
+     * Main render entry: clear canvas, draw world objects and UI, schedule next frame.
      *
      * @returns {void}
      */
@@ -203,7 +95,7 @@ class World{
     }
 
     /**
-     * Clear the entire canvas.
+     * Clear the whole canvas prior to drawing the next frame.
      *
      * @returns {void}
      */
@@ -212,7 +104,7 @@ class World{
     }
 
     /**
-     * Draw all world objects in the correct order. Applies camera translation.
+     * Draw world objects in the intended draw order and apply camera translation.
      *
      * @returns {void}
      */
@@ -229,7 +121,7 @@ class World{
     }
 
     /**
-     * Draw HUD elements (health, coins, bottles and boss bar if active).
+     * Draw HUD elements (health, coin, bottle bars and boss bar when active).
      *
      * @returns {void}
      */
@@ -243,7 +135,7 @@ class World{
     }
 
     /**
-     * Request the next animation frame and call draw again.
+     * Schedule the next animation frame and call draw() again.
      *
      * @returns {void}
      */
@@ -255,9 +147,9 @@ class World{
     }
 
     /**
-     * Add multiple objects to the map by delegating to addToMap.
+     * Draw multiple drawable objects by delegating to addToMap.
      *
-     * @param {Array<DrawableObject>} objectArray - Objects to draw.
+     * @param {Array<DrawableObject>} objectArray - Array of drawable objects.
      * @returns {void}
      */
     addObjectsToMap(objectArray){
@@ -267,9 +159,9 @@ class World{
     }
 
     /**
-     * Draw a single drawable object, handling horizontal flipping when required.
+     * Draw a single drawable object. Handles mirroring when otherDirection is set.
      *
-     * @param {DrawableObject} mo - Movable/Drawable object to render.
+     * @param {DrawableObject} mo - Object to render.
      * @returns {void}
      */
     addToMap(mo){
@@ -283,10 +175,10 @@ class World{
     }
 
     /**
-     * Flip the canvas horizontally for rendering mirrored sprites.
-     * Also negates the object's x to account for the transform.
+     * Flip the canvas horizontally to render a mirrored sprite.
+     * Adjusts the object's x temporarily to compensate for the transform.
      *
-     * @param {DrawableObject} mo - Object to flip for rendering.
+     * @param {DrawableObject} mo - Object being flipped for rendering.
      * @returns {void}
      */
     flipImage(mo){
@@ -297,7 +189,7 @@ class World{
     }
 
     /**
-     * Restore the canvas transform and correct the object's x after mirrored rendering.
+     * Restore canvas transform after mirrored rendering and correct the object's x.
      *
      * @param {DrawableObject} mo - Object that was flipped.
      * @returns {void}
@@ -308,11 +200,12 @@ class World{
     }
 
     /**
-     * Trigger game end sequence: stop background music, play end sound, show overlay and stop the game loop.
+     * Trigger the end-of-game sequence: pause background music, play end sound,
+     * show overlay and stop the game loop after a delay.
      *
-     * @param {"win"|"lose"} type - End type used to select UI behaviour.
-     * @param {string} imagePath - Path to the overlay image to display.
-     * @param {HTMLAudioElement} sound - Sound to play on game end.
+     * @param {"win"|"lose"} type - Result type.
+     * @param {string} imagePath - Path to overlay image to display.
+     * @param {HTMLAudioElement} sound - Sound to play for the result.
      * @returns {void}
      */
     selectGameEnd(type, imagePath, sound){
@@ -324,9 +217,9 @@ class World{
     }
 
     /**
-     * Display the win/lose overlay and set the appropriate image.
+     * Show the win/lose overlay and set the corresponding image.
      *
-     * @param {string} imagePath - Image to show in the overlay.
+     * @param {string} imagePath - Image to display in the overlay.
      * @param {"win"|"lose"} type - Result type.
      * @returns {void}
      */
@@ -338,174 +231,5 @@ class World{
         if(type === "win"){
             imageContainer.innerHTML = `<img src="${imagePath}" alt="win screen">`;
         }
-    }
-
-    /**
-     * Mark a thrown bottle as collided (plays break sound once) and flag the object.
-     *
-     * @param {number} j - Index of the thrown bottle in bottleThrow array.
-     * @param {ThrowableObject} object - The thrown bottle instance.
-     * @returns {void}
-     */
-    bottleBreak(j, object){
-        if(!this.bottleThrow[j].collided){
-            GameSounds.playAudio(GameSounds.GLASS_SHATTER, 0.1, false);
-        }
-        object.collided = true;
-    }
-
-    /**
-     * Return true when the character is colliding with an enemy (not from top).
-     *
-     * @param {MovableObject} object - Target object.
-     * @param {Array} array - The array being checked (used to identify enemies).
-     * @returns {boolean}
-     */
-    isCharacterHitByEnemy(object, array){
-        return this.character.isCollading(object) && array == this.level.enemies && !this.character.isCollidingFromTop(object) && !object.isDead()
-    }
-
-    /**
-     * Handle character being hit by an enemy: play hurt sound (once) and reduce energy.
-     *
-     * @returns {void}
-     */
-    characterisHitByEnemy(){
-        if(!this.character.isHurt() && !this.character.isDead()){
-            GameSounds.playAudio(GameSounds.HURT_SOUND, 0.2, false);
-            this.character.j = 0;
-        }
-        this.character.getHit();
-        this.healthBar.setPercentage(this.character.energy);
-    }
-
-    /**
-     * Handle character jumping on an enemy: play sound, damage enemy and make character jump.
-     *
-     * @param {number} i - index in enemy array.
-     * @param {MovableObject} object - The enemy object.
-     * @returns {void}
-     */
-    characterJumpOnEnemy(i, object){
-        GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
-        object.getHit();
-        this.character.jump();
-    }
-
-    /**
-     * Return true if the character is stomping an enemy (from top).
-     *
-     * @param {MovableObject} object - The object being tested.
-     * @param {Array} array - The array under consideration.
-     * @returns {boolean}
-     */
-    doesCharacterJumpOnEnemy(object, array){
-        return this.character.isCollidingFromTop(object) && array == this.level.enemies && !object.isDead() && this.character.speedY < 0;
-    }
-    
-    /**
-     * Collect a coin: play sound, update coin count/UI and remove the coin from level.
-     *
-     * @param {number} i - Index of the coin in the coins array.
-     * @returns {void}
-     */
-    collectCoin(i){
-        GameSounds.playAudio(GameSounds.COIN, 0.2, false)
-        this.coinAmount += 20;
-        this.coinBar.setPercentage(this.coinAmount);
-        this.level.coins.splice(i, 1);
-    }
-
-    /**
-     * Return true when the character collides with a coin in the coins array.
-     *
-     * @param {MovableObject} object
-     * @param {Array} array
-     * @returns {boolean}
-     */
-    isCollectingCoin(object, array){
-        return this.character.isCollading(object) && array == this.level.coins;
-    }
-
-    /**
-     * Return true when the character collides with a bottle (collectable) and there is capacity.
-     *
-     * @param {MovableObject} object
-     * @param {Array} array
-     * @returns {boolean}
-     */
-    doesCharactertouchBottle(object, array){
-        return this.character.isCollading(object) && array == this.level.bottle && this.bottleAmount < 100;
-    }
-
-    /**
-     * Pick up a bottle: play sound, increase bottle count, update UI and remove bottle from level.
-     *
-     * @param {number} i - Index of the bottle in the level array.
-     * @returns {void}
-     */
-    characterCollectBottle(i){
-        GameSounds.playAudio(GameSounds.COLLECT_BOTTLE, 0.2, false);
-        this.bottleAmount += 20;
-        this.bottleBar.setPercentage(this.bottleAmount);
-        this.level.bottle.splice(i, 1);
-    }
-
-    /**
-     * Return true when a thrown bottle collides with an enemy object.
-     *
-     * @param {MovableObject} object - Target object.
-     * @param {Array} array - The array being checked.
-     * @param {ThrowableObject} throwObj - Thrown bottle to test.
-     * @returns {boolean}
-     */
-    doesBottleHitEnemy(object, array, throwObj){
-        return throwObj.isCollading(object) && array == this.level.enemies && !object.isDead();
-    }
-
-    /**
-     * Return true if the provided object is the level's boss (index 3).
-     *
-     * @param {MovableObject} object
-     * @returns {boolean}
-     */
-    isTheObjectABoss(object){
-        return object == this.level.enemies[3]
-    }
-
-    /**
-     * Update the boss health status bar to reflect the boss's current energy.
-     *
-     * @returns {void}
-     */
-    changeBossHealthBarAmount(){
-        this.bossHealthBar.setPercentage(this.level.enemies[3].energy)
-    }
-
-    /**
-     * Return true when throw key/conditions allow throwing and there is at least one bottle.
-     *
-     * @returns {boolean}
-     */
-    dPressedAndSomeBottleLeft(){
-        return this.keyboard.D && this.bottleAmount > 0 && this.bottleThrow.length < 1;
-    }
-
-    /**
-     * Return true if boss fight has not been started yet.
-     *
-     * @returns {boolean}
-     */
-    bossFightNotStartet(){
-        return !this.level.enemies[3].startBossFight;
-    }
-
-    /**
-     * Return true when the boss start animation counter reached the expected value.
-     *
-     * @returns {boolean}
-     */
-    bossStartAnimationIsOver(){
-        return this.level.enemies[3].startAnimation == 6;
     }
 }
