@@ -1,68 +1,42 @@
 /**
- * @fileoverview Character class representing the player-controlled character.
- * Extends MovableObject and provides movement, animation and audio logic.
+ * @fileoverview Character is the player-controlled entity. It holds rendering-related
+ * properties and image asset lists. Movement, animation and input handling logic is
+ * implemented in CharacterLogic which this class extends. Ensure character.logic.class.js
+ * is loaded before this file so Character can extend CharacterLogic.
  *
- * Responsibilities:
- * - handle input-driven horizontal movement and jumping
- * - manage animation frames for different states (idle, walk, jump, hurt, dead)
- * - play character-related sounds (jump, step, hurt, dead)
- * - update camera position based on character x
+ * The class exposes sprite dimensions, collision offsets and animation frame arrays.
+ * Instances expect a World reference to be attached to the "world" property so input
+ * and camera following work correctly.
  *
- * @extends {MovableObject}
+ * @extends {CharacterLogic}
+ * @class Character
  */
-class Character extends MovableObject{
-    /**
-     * Default sprite width in pixels.
-     * @type {number}
-     */
+class Character extends CharacterLogic{
+    /** @type {number} Default sprite width in pixels. */
     width = 150;
 
-    /**
-     * Default sprite height in pixels.
-     * @type {number}
-     */
+    /** @type {number} Default sprite height in pixels. */
     height = 300;
 
-    /**
-     * Reference to the World instance this character belongs to.
-     * @type {World}
-     */
+    /** @type {World} Reference to the World instance this character belongs to. */
     world;
 
-    /**
-     * Horizontal movement speed.
-     * @type {number}
-     */
+    /** @type {number} Horizontal movement speed (pixels per frame). */
     speed = 6;
 
-    /**
-     * Vertical speed component used by gravity.
-     * @type {number}
-     */
+    /** @type {number} Vertical velocity component for gravity physics. */
     speedY = 0;
 
-    /**
-     * Gravity / upward acceleration factor.
-     * @type {number}
-     */
+    /** @type {number} Gravity / vertical acceleration factor. */
     acceleration = 2;
 
-    /**
-     * Damage value received from certain hits.
-     * @type {number}
-     */
+    /** @type {number} Damage value applied when the character is hit. */
     recievedDamage = 20;
 
-    /**
-     * Counter used to detect long idle state.
-     * @type {number}
-     */
+    /** @type {number} Counter used to detect long idle state (frames). */
     notMoving = 0;
 
-    /**
-     * Collision box offsets relative to sprite bounds.
-     * @type {{top:number,left:number,right:number,bottom:number}}
-     */
+    /** @type {{top:number,left:number,right:number,bottom:number}} Collision box offsets. */
     offset = {
         top: 150,
         left: 45,
@@ -70,16 +44,10 @@ class Character extends MovableObject{
         bottom: 15
     };
 
-    /**
-     * Initial x position.
-     * @type {number}
-     */
-    x= 20
+    /** @type {number} Initial horizontal position. */
+    x = 20;
 
-    /**
-     * Walk animation frames.
-     * @type {string[]}
-     */
+    /** @type {string[]} Walk animation frame paths. */
     IMAGES_WALKING = [
         "img/2_character_pepe/2_walk/W-21.png",
         "img/2_character_pepe/2_walk/W-22.png",
@@ -89,10 +57,7 @@ class Character extends MovableObject{
         "img/2_character_pepe/2_walk/W-26.png"
     ];
 
-    /**
-     * Jump animation frames.
-     * @type {string[]}
-     */
+    /** @type {string[]} Jump animation frame paths. */
     IMAGES_JUMPING = [
         "img/2_character_pepe/3_jump/J-31.png",
         "img/2_character_pepe/3_jump/J-32.png",
@@ -105,10 +70,7 @@ class Character extends MovableObject{
         "img/2_character_pepe/3_jump/J-39.png",
     ];
 
-    /**
-     * Death animation frames.
-     * @type {string[]}
-     */
+    /** @type {string[]} Death animation frame paths. */
     IMAGES_DEAD = [
         "img/2_character_pepe/5_dead/D-51.png",
         "img/2_character_pepe/5_dead/D-52.png",
@@ -119,20 +81,14 @@ class Character extends MovableObject{
         "img/2_character_pepe/5_dead/D-57.png"
     ];
 
-    /**
-     * Hurt animation frames.
-     * @type {string[]}
-     */
+    /** @type {string[]} Hurt animation frame paths. */
     IMAGES_HURT = [
         "img/2_character_pepe/4_hurt/H-41.png",
         "img/2_character_pepe/4_hurt/H-42.png",
         "img/2_character_pepe/4_hurt/H-43.png"
     ];
 
-    /**
-     * Short idle animation frames.
-     * @type {string[]}
-     */
+    /** @type {string[]} Short idle animation frame paths. */
     IMAGES_IDLE = [
         "img/2_character_pepe/1_idle/idle/I-1.png",
         "img/2_character_pepe/1_idle/idle/I-2.png",
@@ -146,10 +102,7 @@ class Character extends MovableObject{
         "img/2_character_pepe/1_idle/idle/I-10.png",
     ];
 
-    /**
-     * Long idle animation frames used after prolonged inactivity.
-     * @type {string[]}
-     */
+    /** @type {string[]} Long idle animation frame paths. */
     IMAGES_LONG_IDLE = [
         "img/2_character_pepe/1_idle/long_idle/I-11.png",
         "img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -161,187 +114,21 @@ class Character extends MovableObject{
         "img/2_character_pepe/1_idle/long_idle/I-18.png",
         "img/2_character_pepe/1_idle/long_idle/I-19.png",
         "img/2_character_pepe/1_idle/long_idle/I-20.png"
-    ]
-    
+    ];
+
     /**
-     * Construct the character, load default image and start animation/gravity loops.
-     * @returns {void}
+     * Create a Character instance, preload assets and start animation/physics loops.
+     *
+     * Initializes the default sprite image, loads all image sets and starts
+     * animation and gravity behavior provided by the parent class (CharacterLogic).
+     *
+     * @constructor
      */
-    constructor (){
-        super().loadImage("img/2_character_pepe/1_idle/idle/I-1.png");
+    constructor(){
+        super(); 
+        this.loadImage(this.IMAGES_IDLE[0]);
         this.loadAllImages();
         this.animate();
         this.applyGravity();
-    }
-
-    /**
-     * Start repeating intervals that run movement, animation and step sound.
-     * Uses setStoppableInterval to allow cleanup.
-     *
-     * @returns {void}
-     */
-    animate(){
-        setStoppableInterval(() => this.makeCharacterMove(), 1000/60);
-        setStoppableInterval(() => this.animateCharacter(), 100);
-        setStoppableInterval(() => this.playRunSound(), 140); 
-    }
-
-    /**
-     * Perform per-frame character logic: horizontal movement, jump handling and camera update.
-     * @returns {void}
-     */
-    makeCharacterMove(){
-        this.handleHorizontalMovement();
-        this.handleJump();
-        this.updateCameraPosition();
-    }
-
-    /**
-     * Play step sound when walking on ground.
-     * @returns {void}
-     */
-    playRunSound(){
-        if(this.isWalking() && !this.isJumping()){
-            GameSounds.playAudio(GameSounds.STEP, 0.4, false);
-        }
-    }
-
-    /**
-     * Decide which animation to play based on current state (dead, hurt, jumping, walking, idle).
-     * @returns {void}
-     */
-    animateCharacter(){
-        if(this.isDead()){
-            this.animateDeath();
-        }else if(this.isHurt()){
-            this.animateHurt();
-        }else if(this.isJumping()){
-            this.animateJump()
-        } else if(this.isWalking()){
-            this.animateWalk();
-        }else {
-            this.animateIdle();
-        }
-    }
-
-    /**
-     * Preload all image frames used by this character.
-     * @returns {void}
-     */
-    loadAllImages(){
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_JUMPING);
-        this.loadImages(this.IMAGES_DEAD);
-        this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_IDLE);
-        this.loadImages(this.IMAGES_LONG_IDLE);
-    }
-
-    /**
-     * Animate death frames and reset notMoving counter.
-     * @returns {void}
-     */
-    animateDeath(){
-        this.animateImage(this.IMAGES_DEAD);
-        this.notMoving = 0;
-    }
-
-    /**
-     * Animate hurt frames and reset notMoving counter.
-     * @returns {void}
-     */
-    animateHurt(){
-        this.animateImage(this.IMAGES_HURT);
-        this.notMoving = 0;
-    }
-
-    /**
-     * Animate jumping frames and reset notMoving counter.
-     * @returns {void}
-     */
-    animateJump(){
-        this.animateImage(this.IMAGES_JUMPING);
-        this.notMoving = 0;
-    }
-
-    /**
-     * Animate walking frames and reset notMoving counter.
-     * @returns {void}
-     */
-    animateWalk(){
-        this.animateImage(this.IMAGES_WALKING);
-        this.notMoving = 0;
-    }
-
-    /**
-     * Returns true if the character is in a jump state (not on ground).
-     * Delegates to limitationYGround() from MovableObject.
-     *
-     * @returns {boolean}
-     */
-    isJumping(){
-        return this.limitationYGround();
-    }
-
-    /**
-     * Returns true if either left or right input is active.
-     *
-     * @returns {boolean}
-     */
-    isWalking(){
-        return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
-    }
-
-    /**
-     * Animate idle or long idle depending on inactivity counter.
-     * @returns {void}
-     */
-    animateIdle(){
-        if (this.notMoving < this.IMAGES_IDLE.length * 3) {
-            this.animateImage(this.IMAGES_IDLE);
-            this.notMoving++;
-        } else {
-            this.animateImage(this.IMAGES_LONG_IDLE);
-        }
-    }
-
-    /**
-     * Handle horizontal movement input and enforce world boundaries.
-     * Updates sprite direction flag when moving left.
-     *
-     * @returns {void}
-     */
-    handleHorizontalMovement(){
-        if (this.world.keyboard.LEFT && this.x > -616) {
-            this.moveLeft();
-            this.otherDirection = true;
-        }
-        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-            this.moveRight();
-        }
-    }
-
-    /**
-     * Handle jump input. If jump key pressed and character is on ground, trigger jump and play sound.
-     *
-     * @returns {void}
-     */
-    handleJump(){
-        let isJumpKey = this.world.keyboard.UP || this.world.keyboard.SPACE;
-        let canJump = !this.limitationYGround();
-
-        if (isJumpKey && canJump) {
-            this.jump();
-            GameSounds.playAudio(GameSounds.JUMP, 0.4, false);
-            this.notMoving = 0;
-        }
-    }
-
-    /**
-     * Update the world's camera_x so the camera follows the character.
-     * @returns {void}
-     */
-    updateCameraPosition(){
-        this.world.camera_x = -this.x + 100;
     }
 }
