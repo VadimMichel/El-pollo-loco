@@ -64,13 +64,13 @@ class World extends WorldLogic {
      * @param {Keyboard} keyboard - Shared keyboard input state object.
      */
     constructor(canvas, keyboard){
-        super(); // initialize WorldLogic parent
+        super();
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
-        this.run(); // run() is provided by WorldLogic via inheritance
+        this.run();
     }
 
     /**
