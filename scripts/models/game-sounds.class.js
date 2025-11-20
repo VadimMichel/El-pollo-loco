@@ -18,6 +18,8 @@ class GameSounds{
     static CHICKEN_NOISE = new Audio("./audio/chicken-noise-196746.mp3");
     /** @type {HTMLAudioElement} Bottle collect sound. */
     static COLLECT_BOTTLE = new Audio("./audio/collect_bottle.mp3");
+    /** @type {HTMLAudioElement} Can not trow error sound. */
+    static BOTTLE_ERROR = new Audio("./audio/error-bottle.mp3")
     /** @type {HTMLAudioElement} Glass shatter sound. */
     static GLASS_SHATTER = new Audio("./audio/glass-shatter-3-100155.mp3");
     /** @type {HTMLAudioElement} Jump sound. */
@@ -42,6 +44,7 @@ class GameSounds{
     static allSounds = [
         GameSounds.CHICKEN_NOISE,
         GameSounds.COLLECT_BOTTLE,
+        GameSounds.BOTTLE_ERROR,
         GameSounds.GLASS_SHATTER,
         GameSounds.JUMP,
         GameSounds.BACKGROUND_MUSIK,
@@ -72,7 +75,7 @@ class GameSounds{
      */
     static unMuteGame(id){
         GameSounds.setMuteState(false);
-        GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.2, true);
+        GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.1, true);
         GameSounds.updateMuteUI(id, 'unmuted');
     }
         

@@ -14,7 +14,9 @@ body{
   position: relative;
   font-family: 'IM Fell English SC';
   font-size: 21px;
+  font-weight: 600;
   color: black;
+  text-align: center;
 }
 
 *{

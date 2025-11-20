@@ -62,29 +62,6 @@ class WorldLogic {
     }
 
     /**
-     * Start the recurring update loop for game events.
-     *
-     * @returns {void}
-     */
-    run(){
-        setStoppableInterval(() => this.events(), 10);
-    }
-
-    /**
-     * Periodic update: run collision checks, throw logic, boss triggers and game over.
-     *
-     * @returns {void}
-     */
-    events(){
-        this.checkCollisions(this.level.enemies); 
-        this.checkCollisions(this.level.coins);
-        this.checkCollisions(this.level.bottle);
-        this.checkThrow();
-        this.startBossFight();
-        this.gameOver();
-    }
-
-    /**
      * Trigger boss fight when the character passes the configured X threshold.
      *
      * @returns {void}
@@ -109,17 +86,19 @@ class WorldLogic {
     }
 
     /**
-     * Handle throw input and create a new ThrowableObject when allowed.
+     * Handle throw input and create a new ThrowableObject when allowed; if throwing is not possible, an error sound is played.
      *
      * @returns {void}
      */
     checkThrow(){
-        if(this.dPressedAndSomeBottleLeft() && this.bossFightNotStartet() || this.bossStartAnimationIsOver() && this.dPressedAndSomeBottleLeft()){
+        if(this.dPressedAndSomeBottleLeft() && (this.bossFightNotStartet() || this.bossStartAnimationIsOver())){
             let bottleThrow = new ThrowableObject(this.character.x + 70, this.character.y + 100);
             this.bottleThrow.push(bottleThrow);
             this.bottleAmount -= 20;
             this.bottleBar.setPercentage(this.bottleAmount)
             this.bottleThrow.lastHit = new Date().getTime()
+        } else if(this.dPressedAndNoBottleLeft() || this.dPressedAndSomeBottleLeft() && (!this.bossFightNotStartet() || !this.bossStartAnimationIsOver())){
+            GameSounds.playAudio(GameSounds.BOTTLE_ERROR, 0.3, false);
         }
     }
 
@@ -272,6 +251,16 @@ class WorldLogic {
      */
     dPressedAndSomeBottleLeft(){
         return this.keyboard.D && this.bottleAmount > 0 && this.bottleThrow.length < 1;
+    }
+
+    /**
+     * Return true when the throw key is pressed, has zero bottles left,
+     * and there is no active thrown bottle.
+     * 
+     * @returns {boolean} 
+    */
+    dPressedAndNoBottleLeft(){
+        return this.keyboard.D && this.bottleAmount == 0 && this.bottleThrow.length < 1;
     }
 
     /**
