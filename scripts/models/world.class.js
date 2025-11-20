@@ -95,6 +95,29 @@ class World extends WorldLogic {
     }
 
     /**
+     * Start the recurring update loop for game events.
+     *
+     * @returns {void}
+     */
+    run(){
+        setStoppableInterval(() => this.events(), 10);
+    }
+
+    /**
+     * Periodic update: run collision checks, throw logic, boss triggers and game over.
+     *
+     * @returns {void}
+     */
+    events(){
+        this.checkCollisions(this.level.enemies); 
+        this.checkCollisions(this.level.coins);
+        this.checkCollisions(this.level.bottle);
+        this.checkThrow();
+        this.startBossFight();
+        this.gameOver();
+    }
+
+    /**
      * Clear the whole canvas prior to drawing the next frame.
      *
      * @returns {void}
