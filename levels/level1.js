@@ -72,11 +72,11 @@ function initLevel(){
             new BackgroundObject("img/5_background/layers/1_first_layer/2.png", 719 * 3)
         ],
         [
-            new CollectableObject("coin", 20),
-            new CollectableObject("coin", 20),
-            new CollectableObject("coin", 20),
-            new CollectableObject("coin", 20),
-            new CollectableObject("coin", 20)
+            new CollectableObject("coin", 150),
+            new CollectableObject("coin", 150),
+            new CollectableObject("coin", 150),
+            new CollectableObject("coin", 150),
+            new CollectableObject("coin", 150)
         ],
         [
             new CollectableObject("bottle", 330),
