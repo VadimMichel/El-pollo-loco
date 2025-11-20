@@ -108,10 +108,12 @@ class CharacterLogic extends MovableObject {
     animateWalk(){
         this.animateImage(this.IMAGES_WALKING);
         this.notMoving = 0;
+        GameSounds.SNORE.pause();
     }
 
     /**
-     * Animate idle or long idle depending on inactivity counter.
+     * Animate idle or long idle depending on inactivity counter and Plays the snore sound after 2 seconds of long idle 
+     * and stops it immediately when the character moves.
      *
      * @returns {void}
      */
@@ -121,6 +123,10 @@ class CharacterLogic extends MovableObject {
             this.notMoving++;
         } else {
             this.animateImage(this.IMAGES_LONG_IDLE);
+            snoreSound = GameSounds.playAudio(GameSounds.SNORE, 0.4, false)
+        }
+        if(this.notMoving == 0){
+            snoreSound.pause();
         }
     }
 

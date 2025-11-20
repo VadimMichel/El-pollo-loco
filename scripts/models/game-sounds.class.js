@@ -24,6 +24,8 @@ class GameSounds{
     static GLASS_SHATTER = new Audio("./audio/glass-shatter-3-100155.mp3");
     /** @type {HTMLAudioElement} Jump sound. */
     static JUMP = new Audio("./audio/jump.mp3");
+    /** @type {HTMLAudioElement} Snore sound. */
+    static SNORE = new Audio("./audio/snore.mp3");
     /** @type {HTMLAudioElement} Background music track. */
     static BACKGROUND_MUSIK = new Audio("./audio/latin-traditional-music-spanish-mexican-background-intro-theme-258024.mp3");
     /** @type {HTMLAudioElement} Lose sound. */
@@ -47,6 +49,7 @@ class GameSounds{
         GameSounds.BOTTLE_ERROR,
         GameSounds.GLASS_SHATTER,
         GameSounds.JUMP,
+        GameSounds.SNORE,
         GameSounds.BACKGROUND_MUSIK,
         GameSounds.LOSE,
         GameSounds.HURT_SOUND,
