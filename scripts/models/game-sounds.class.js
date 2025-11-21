@@ -38,6 +38,8 @@ class GameSounds{
     static STEP = new Audio("./audio/step.mp3");
     /** @type {HTMLAudioElement} Win sound. */
     static WIN = new Audio("./audio/win.mp3");
+    /** @type {HTMLAudioElement} Bossfight start background musik. */
+    static BOSS = new Audio("./audio/bossfight.mp3")
 
     /** @type {boolean} Instance-level mute flag (unused for static methods, kept for compatibility). */
     mute = false;
@@ -51,6 +53,7 @@ class GameSounds{
         GameSounds.JUMP,
         GameSounds.SNORE,
         GameSounds.BACKGROUND_MUSIK,
+        GameSounds.BOSS,
         GameSounds.LOSE,
         GameSounds.HURT_SOUND,
         GameSounds.COIN,

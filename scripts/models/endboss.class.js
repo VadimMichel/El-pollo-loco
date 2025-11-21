@@ -147,15 +147,30 @@ class Endboss extends MovableObject{
     }
 
     /**
-     * Move the boss left under specified conditions:
-     * - When fight started and boss is still beyond a threshold (entrance)
-     * - Or when alert animation finished and the boss isn't dead.
+     * Move the boss left under specified conditions.
+     *
+     * The boss moves left when:
+     * - The boss fight has started AND the boss is still beyond the entrance threshold (x > 2500)
+     *   AND the boss is not dead.
+     * - OR the alert animation has finished (startAnimation >= IMAGES_ALERT.length + 1)
+     *   AND the boss is not dead.
+     *
+     * When the boss starts moving during the fight, background music is paused and boss music plays once.
+     * After the alert phase completes, background music resumes.
      *
      * @returns {void}
      */
     makeBoosMoveLeft(){
         if((this.startBossFight && this.x > 2500 && !this.isDead()) || (this.startAnimation >= this.IMAGES_WALKING.length +1 && !this.isDead())){
             this.moveLeft(this.speed);
+            if(this.startBossFight && this.startAnimation < this.IMAGES_WALKING.length){
+                setTimeout(() => {
+                    GameSounds.BACKGROUND_MUSIK.pause();
+                    GameSounds.playAudio(GameSounds.BOSS, 0.1, false);
+                },1000)
+            }else if(this.startBossFight && this.startAnimation == this.IMAGES_WALKING.length +1){
+                GameSounds.playAudio(GameSounds.BACKGROUND_MUSIK, 0.1, false)
+            }
         }
     }
 
