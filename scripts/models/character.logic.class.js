@@ -115,28 +115,30 @@ class CharacterLogic extends MovableObject {
     }
 
     /**
-     * Animate idle or long idle depending on inactivity counter and Plays the snore sound after 2 seconds of long idle 
-     * and stops it immediately when the character moves.
-     * 
+     * Animate idle or long idle depending on inactivity counter and plays the snore sound after 2 seconds of long idle.
+     * Stops snore sound immediately when the character moves.
+     *
      * Only plays idle animations when:
      * - Boss fight has NOT started, OR
      * - Boss fight has started AND the boss alert animation is finished (startAnimation > IMAGES_WALKING.length)
      *
-     *
      * @returns {void}
      */
     animateIdle(){
-        let boss = this.world?.level?.enemies?.[3];
-        if ( !boss.startBossFight || boss.startBossFight && boss.startAnimation > boss.IMAGES_WALKING?.length) {
+        const boss = this.world && this.world.level && this.world.level.enemies && this.world.level.enemies[3];
+
+        if (!boss || !boss.startBossFight || (boss.startBossFight && boss.startAnimation > boss.IMAGES_WALKING.length)) {
             if (this.notMoving < this.IMAGES_IDLE.length * 3) {
                 this.animateImage(this.IMAGES_IDLE);
                 this.notMoving++;
             } else {
                 this.animateImage(this.IMAGES_LONG_IDLE);
-                snoreSound = GameSounds.playAudio(GameSounds.SNORE, 0.4, false)
+                if (!this.snoreSound || this.snoreSound.paused) {
+                    this.snoreSound = GameSounds.playAudio(GameSounds.SNORE, 0.4, false);
+                }
             }
-            if(this.notMoving == 0){
-                snoreSound.pause();
+            if (this.notMoving === 0 && this.snoreSound && !this.snoreSound.paused) {
+                this.snoreSound.pause();
             }
         }
     }
