@@ -161,7 +161,6 @@ h1{
 .keys img{
   margin-left: 20px;
   margin-right: 20px;
-  margin-bottom: 30px;
   width: 50px;
   height: 50px;
 }
@@ -271,6 +270,10 @@ h1{
 
   .fullscreen-hide{
     display: flex;
+  }
+
+  .game-pad{
+    display: none;
   }
 }
 
