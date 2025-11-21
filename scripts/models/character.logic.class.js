@@ -17,6 +17,9 @@
  * @class CharacterLogic
  */
 class CharacterLogic extends MovableObject {
+    /** @type {World} Reference to the World instance this character belongs to. */
+    world;
+
     /**
      * Start repeated intervals for movement, animation and step sound.
      * Uses global setStoppableInterval to allow external clearing.
@@ -114,19 +117,27 @@ class CharacterLogic extends MovableObject {
     /**
      * Animate idle or long idle depending on inactivity counter and Plays the snore sound after 2 seconds of long idle 
      * and stops it immediately when the character moves.
+     * 
+     * Only plays idle animations when:
+     * - Boss fight has NOT started, OR
+     * - Boss fight has started AND the boss alert animation is finished (startAnimation > IMAGES_WALKING.length)
+     *
      *
      * @returns {void}
      */
     animateIdle(){
-        if (this.notMoving < this.IMAGES_IDLE.length * 3) {
-            this.animateImage(this.IMAGES_IDLE);
-            this.notMoving++;
-        } else {
-            this.animateImage(this.IMAGES_LONG_IDLE);
-            snoreSound = GameSounds.playAudio(GameSounds.SNORE, 0.4, false)
-        }
-        if(this.notMoving == 0){
-            snoreSound.pause();
+        let boss = this.world?.level?.enemies?.[3];
+        if ( !boss.startBossFight || boss.startBossFight && boss.startAnimation > boss.IMAGES_WALKING?.length) {
+            if (this.notMoving < this.IMAGES_IDLE.length * 3) {
+                this.animateImage(this.IMAGES_IDLE);
+                this.notMoving++;
+            } else {
+                this.animateImage(this.IMAGES_LONG_IDLE);
+                snoreSound = GameSounds.playAudio(GameSounds.SNORE, 0.4, false)
+            }
+            if(this.notMoving == 0){
+                snoreSound.pause();
+            }
         }
     }
 

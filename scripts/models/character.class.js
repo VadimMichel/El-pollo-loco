@@ -18,9 +18,6 @@ class Character extends CharacterLogic{
     /** @type {number} Default sprite height in pixels. */
     height = 300;
 
-    /** @type {World} Reference to the World instance this character belongs to. */
-    world;
-
     /** @type {number} Horizontal movement speed (pixels per frame). */
     speed = 6;
 
