@@ -142,7 +142,8 @@ class WorldLogic {
     }
 
     /**
-     * Handle character jumping on an enemy: damage enemy and make character bounce.
+     * Handle character jumping on an enemy: damage enemy 
+     * and make the character bounce at half the normal jump height.
      *
      * @param {number} i - Index of the enemy.
      * @param {MovableObject} object - The enemy object.
@@ -151,7 +152,8 @@ class WorldLogic {
     characterJumpOnEnemy(i, object){
         GameSounds.playAudio(GameSounds.CHICKEN_NOISE, 0.1, false);
         object.getHit();
-        this.character.jump();
+        this.character.jump(18);
+        this.character.speedY /= 2;
     }
 
     /**

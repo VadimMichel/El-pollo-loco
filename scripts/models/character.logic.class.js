@@ -189,7 +189,7 @@ class CharacterLogic extends MovableObject {
         let canJump = !this.limitationYGround();
 
         if (isJumpKey && canJump) {
-            this.jump();
+            this.jump(18);
             GameSounds.playAudio(GameSounds.JUMP, 0.4, false);
             this.notMoving = 0;
         }
