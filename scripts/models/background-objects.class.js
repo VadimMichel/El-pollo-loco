@@ -10,7 +10,7 @@
  * @class BackgroundObject
  * @extends {MovableObject}
  */
-class BackgroundObject extends MovableObject{
+class BackgroundObject extends MovableObject {
     /**
      * Width of the background image in pixels.
      * @type {number}
@@ -29,7 +29,7 @@ class BackgroundObject extends MovableObject{
      * @param {string} imagePath - Path to the background image file.
      * @param {number} x - Initial x position in pixels.
      */
-    constructor(imagePath, x){
+    constructor(imagePath, x) {
         super().loadImage(imagePath);
         this.setPosition(x);
     }
@@ -41,8 +41,24 @@ class BackgroundObject extends MovableObject{
      * @param {number} x - X coordinate in pixels.
      * @returns {void}
      */
-    setPosition(x){
+    setPosition(x) {
         this.y = 480 - this.height;
         this.x = x;
+    }
+
+    /**
+     * Return a nicely formatted debug string as JSON for console output.
+     * Use: console.log(JSON.stringify(bgObj, null, 2))
+     *
+     * @returns {string}
+     */
+    toString(){
+        return JSON.stringify({
+            class: 'BackgroundObject',
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height
+        }, null, 2);
     }
 }
