@@ -283,3 +283,22 @@ class WorldLogic {
         return this.level.enemies[3].startAnimation == 6;
     }
 }
+
+/**
+ * Restart the game: reset flags, reinitialize level, and start game loop.
+ *
+ * @returns {void}
+ */
+function restartGame(){
+    // reset playedSound flag so gameOver() can trigger again
+    if (world) {
+        world.playedSound = false;
+    }
+    
+    // ... rest of restart logic (clear intervals, reinit level, etc.)
+    initLevel();
+    world = new World(canvas, keyboard);
+    world.run();
+    showGameUI();
+    playBackgroundMusic();
+}

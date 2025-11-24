@@ -253,6 +253,8 @@ class World extends WorldLogic {
         overlay.classList.remove("d-none");
         if(type === "win"){
             imageContainer.innerHTML = `<img src="${imagePath}" alt="win screen">`;
+        }else if(type === "lose"){
+            imageContainer.innerHTML = `<img src="${imagePath}" alt="lose screen">`;
         }
     }
 }

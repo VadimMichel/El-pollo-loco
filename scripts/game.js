@@ -56,6 +56,9 @@ function startGameBotton(){
  */
 function stopGame(){
     intervalIds.forEach(clearInterval);
+    if (world) {
+        world.playedSound = false;
+    }
 }
 
 /**
