@@ -50,7 +50,7 @@ function startGameBotton(){
 }
 
 /**
- * Stop all intervals previously created via setStoppableInterval.
+ * Stop all active game intervals and reset game state flags.
  *
  * @returns {void}
  */

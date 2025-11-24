@@ -186,7 +186,7 @@ h1{
   }
 }
 
-@media (max-width: 720px) and (min-height: 480px) {
+@media (max-width: 720px) and (min-height: 549px) {
   #rotateOverlay {
     display: flex;
     justify-content: center;
@@ -233,7 +233,7 @@ h1{
   }
 }
 
-@media only screen and (max-height: 480px) {
+@media only screen and (max-height: 549px) {
   canvas{
     height: 100vh;
   }
